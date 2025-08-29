@@ -96,13 +96,13 @@ export default function SecretariaHome({ navigation }) {
 
       {expanded === 'notas' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem}>
+          <TouchableOpacity style={styles.dropdownItem}onPress={() => navigation.navigate('HabilitarNotas')}>
             <Text style={styles.dropdownText}>✅ Habilitar Notas</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem}>
+          <TouchableOpacity style={styles.dropdownItem}onPress={() => navigation.navigate('DeshabilitarNotas')}>
             <Text style={styles.dropdownText}>🚫 Deshabilitar Notas</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem}>
+          <TouchableOpacity style={styles.dropdownItem}onPress={() => navigation.navigate('GestionNotas')}>
             <Text style={styles.dropdownText}>📑 Gestion de notas por usuario</Text>
           </TouchableOpacity>
         </View>
