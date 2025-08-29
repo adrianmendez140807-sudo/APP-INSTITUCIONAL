@@ -16,6 +16,9 @@ import AgregarDocente from '../screens/Secretaria/Docentes1/AgregarDocente';
 import ListaDocentes from '../screens/Secretaria/Docentes1/ListaDocentes';
 import ListaEstudiantes from '../screens/Secretaria/Estudiantes1/ListaEstudiantes';
 import BaseDatosEstudiantes from '../screens/Secretaria/Estudiantes1/DataBaseStudent';
+import DeshabilitarNotas from '../screens/Secretaria/GestionNotas/DeshabilitarNotas';
+import HabilitarNotas from '../screens/Secretaria/GestionNotas/HabilitarNotas';
+import GestionNotas from '../screens/Secretaria/GestionNotas/GestionNotasPU';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +40,9 @@ export default function AppNavigator() {
       <Stack.Screen name="ListaDocentes" component={ListaDocentes} options={{ title: 'Docentes' }} />
       <Stack.Screen name="ListaEstudiantes" component={ListaEstudiantes} options={{ title: 'Estudiantes' }} />
       <Stack.Screen name="BaseDatosEstudiantes" component={BaseDatosEstudiantes} options={{ title: 'BDEs' }} />
+      <Stack.Screen name="DeshabilitarNotas" component={DeshabilitarNotas} options={{ title: 'DN' }} />
+      <Stack.Screen name="GestionNotas" component={GestionNotas} options={{ title: 'GN' }} />
+      <Stack.Screen name="HabilitarNotas" component={HabilitarNotas} options={{ title: 'HN' }} />
     </Stack.Navigator>
   );
 }
