@@ -22,7 +22,7 @@ import GestionNotas from '../screens/Secretaria/GestionNotas/GestionNotasPU';
 import CircularesAvisos from '../screens/Secretaria/Comunicacion/CircularesAvisos';
 import MensajesEstudiantes from '../screens/Secretaria/Comunicacion/MensajesEstudiantes';
 import ArchivosDigitales from '../screens/Secretaria/Documentos/ArchivosDigitales';
-import DocumentosOficiale from '../screens/Secretaria/Documentos/DocumentosOficiales';
+import DocumentosOficiales from '../screens/Secretaria/Documentos/DocumentosOficiales';
 import GestionarLibros from '../screens/Secretaria/Documentos/GestionarLibros';
 import GenerarReportes from '../screens/Secretaria/Reportes/GenerarReportes';
 import ReportesAsistencias from '../screens/Secretaria/Reportes/ReportesAsistencias';
@@ -54,7 +54,7 @@ export default function AppNavigator() {
       <Stack.Screen name="CircularesAvisos" component={CircularesAvisos} options={{ tittle: 'CA'}}/>
       <Stack.Screen name="MensajesEstudiantes" component={MensajesEstudiantes} options={{ tittle: 'ME'}}/>
       <Stack.Screen name="ArchivosDigitales" component={ArchivosDigitales} options={{ tittle: 'AD'}}/>
-      <Stack.Screen name="DocumentosOficilaes" component={DocumentosOficiales} options={{ tittle: 'DO'}}/>
+      <Stack.Screen name="DocumentosOficiles" component={DocumentosOficiales} options={{ tittle: 'DO'}}/>
       <Stack.Screen name="GestionarLibros" component={GestionarLibros} options={{ tittle: 'GL'}}/>
       <Stack.Screen name="GenerarReportes" component={GenerarReportes} options={{ tittle: 'GR'}}/>
       <Stack.Screen name="ReportesAsistencias" component={ReportesAsistencias} options={{ title: 'RA'}}/>
