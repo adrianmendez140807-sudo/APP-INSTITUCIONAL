@@ -19,6 +19,13 @@ import BaseDatosEstudiantes from '../screens/Secretaria/Estudiantes1/DataBaseStu
 import DeshabilitarNotas from '../screens/Secretaria/GestionNotas/DeshabilitarNotas';
 import HabilitarNotas from '../screens/Secretaria/GestionNotas/HabilitarNotas';
 import GestionNotas from '../screens/Secretaria/GestionNotas/GestionNotasPU';
+import CircularesAvisos from '../screens/Secretaria/Comunicacion/CircularesAvisos';
+import MensajesEstudiantes from '../screens/Secretaria/Comunicacion/MensajesEstudiantes';
+import ArchivosDigitales from '../screens/Secretaria/Documentos/ArchivosDigitales';
+import DocumentosOficiale from '../screens/Secretaria/Documentos/DocumentosOficiales';
+import GestionarLibros from '../screens/Secretaria/Documentos/GestionarLibros';
+import GenerarReportes from '../screens/Secretaria/Reportes/GenerarReportes';
+import ReportesAsistencias from '../screens/Secretaria/Reportes/ReportesAsistencias';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +50,13 @@ export default function AppNavigator() {
       <Stack.Screen name="DeshabilitarNotas" component={DeshabilitarNotas} options={{ title: 'DN' }} />
       <Stack.Screen name="GestionNotas" component={GestionNotas} options={{ title: 'GN' }} />
       <Stack.Screen name="HabilitarNotas" component={HabilitarNotas} options={{ title: 'HN' }} />
+      <Stack.Screen name="CircularesAvisos" component={CircularesAvisos} options={{ tittle: 'CA'}}/>
+      <Stack.Screen name="MensajesEstudiantes" component={MensajesEstudiantes} options={{ tittle: 'ME'}}/>
+      <Stack.Screen name="ArchivosDigitales" component={ArchivosDigitales} options={{ tittle: 'AD'}}/>
+      <Stack.Screen name="DocumentosOficilaes" component={DocumentosOficiale} options={{ tittle: 'DO'}}/>
+      <Stack.Screen name="GestionarLibros" component={GestionarLibros} options={{ tittle: 'GL'}}/>
+      <Stack.Screen name="GenerarReportes" component={GenerarReportes} options={{ tittle: 'GR'}}/>
+      <Stack.Screen name="ReportesAsistencias" component={ReportesAsistencias} options={{ title: 'RA'}}/>
     </Stack.Navigator>
   );
 }
