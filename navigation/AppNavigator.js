@@ -22,7 +22,6 @@ import GestionNotas from '../screens/Secretaria/GestionNotas/GestionNotasPU';
 import CircularesAvisos from '../screens/Secretaria/Comunicacion/CircularesAvisos';
 import MensajesEstudiantes from '../screens/Secretaria/Comunicacion/MensajesEstudiantes';
 import ArchivosDigitales from '../screens/Secretaria/Documentos/ArchivosDigitales';
-import DocumentosOficiales from '../screens/Secretaria/Documentos/DocumentosOficiales';
 import GestionarLibros from '../screens/Secretaria/Documentos/GestionarLibros';
 import GenerarReportes from '../screens/Secretaria/Reportes/GenerarReportes';
 import ReportesAsistencias from '../screens/Secretaria/Reportes/ReportesAsistencias';
