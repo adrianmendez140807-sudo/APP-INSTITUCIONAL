@@ -96,13 +96,13 @@ export default function SecretariaHome({ navigation }) {
 
       {expanded === 'notas' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem}onPress={() => navigation.navigate('HabilitarNotas')}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('HabilitarNotas')}>
             <Text style={styles.dropdownText}>✅ Habilitar Notas</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem}onPress={() => navigation.navigate('DeshabilitarNotas')}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('DeshabilitarNotas')}>
             <Text style={styles.dropdownText}>🚫 Deshabilitar Notas</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem}onPress={() => navigation.navigate('GestionNotas')}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GestionNotas')}>
             <Text style={styles.dropdownText}>📑 Gestion de notas por usuario</Text>
           </TouchableOpacity>
         </View>
@@ -110,13 +110,13 @@ export default function SecretariaHome({ navigation }) {
 
       {expanded === 'documentos' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GestionarLibros')}>
             <Text style={styles.dropdownText}>📚 Gestionar Libros</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ArchivosDigitales')}>
             <Text style={styles.dropdownText}>📑 Archivos Digitales</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('DocumentosOficiales')}>
             <Text style={styles.dropdownText}>📂 Documentos Oficiales</Text>
           </TouchableOpacity>
         </View>
@@ -124,10 +124,10 @@ export default function SecretariaHome({ navigation }) {
 
       {expanded === 'reportes' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GenerarReportes')}>
             <Text style={styles.dropdownText}>📊 Generar Reportes</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ReportesAsistencias')}>
             <Text style={styles.dropdownText}>📅 Reporte de Asistencia</Text>
           </TouchableOpacity>
         </View>
@@ -135,10 +135,10 @@ export default function SecretariaHome({ navigation }) {
 
       {expanded === 'comunicacion' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('CircularesAvisos')}>
             <Text style={styles.dropdownText}>📢 Circulares y Avisos</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MensajesEstudiantes')}>
             <Text style={styles.dropdownText}>💬 Mensajes a Estudiantes</Text>
           </TouchableOpacity>
         </View>
