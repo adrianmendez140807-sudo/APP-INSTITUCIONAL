@@ -53,7 +53,7 @@ export default function AppNavigator() {
       <Stack.Screen name="CircularesAvisos" component={CircularesAvisos} options={{ tittle: 'CA'}}/>
       <Stack.Screen name="MensajesEstudiantes" component={MensajesEstudiantes} options={{ tittle: 'ME'}}/>
       <Stack.Screen name="ArchivosDigitales" component={ArchivosDigitales} options={{ tittle: 'AD'}}/>
-      <Stack.Screen name="DocumentosOficiles" component={DocumentosOficiales} options={{ tittle: 'DO'}}/>
+      <Stack.Screen name="DocumentosOficiales" component={DocumentosOficiales} options={{ tittle: 'DO'}}/>
       <Stack.Screen name="GestionarLibros" component={GestionarLibros} options={{ tittle: 'GL'}}/>
       <Stack.Screen name="GenerarReportes" component={GenerarReportes} options={{ tittle: 'GR'}}/>
       <Stack.Screen name="ReportesAsistencias" component={ReportesAsistencias} options={{ title: 'RA'}}/>
