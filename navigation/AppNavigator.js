@@ -26,6 +26,7 @@ import DocumentosOficiale from '../screens/Secretaria/Documentos/DocumentosOfici
 import GestionarLibros from '../screens/Secretaria/Documentos/GestionarLibros';
 import GenerarReportes from '../screens/Secretaria/Reportes/GenerarReportes';
 import ReportesAsistencias from '../screens/Secretaria/Reportes/ReportesAsistencias';
+import DocumentosOficiales from '../screens/Secretaria/Documentos/DocumentosOficiales';
 
 const Stack = createNativeStackNavigator();
 
@@ -53,7 +54,7 @@ export default function AppNavigator() {
       <Stack.Screen name="CircularesAvisos" component={CircularesAvisos} options={{ tittle: 'CA'}}/>
       <Stack.Screen name="MensajesEstudiantes" component={MensajesEstudiantes} options={{ tittle: 'ME'}}/>
       <Stack.Screen name="ArchivosDigitales" component={ArchivosDigitales} options={{ tittle: 'AD'}}/>
-      <Stack.Screen name="DocumentosOficilaes" component={DocumentosOficiale} options={{ tittle: 'DO'}}/>
+      <Stack.Screen name="DocumentosOficilaes" component={DocumentosOficiales} options={{ tittle: 'DO'}}/>
       <Stack.Screen name="GestionarLibros" component={GestionarLibros} options={{ tittle: 'GL'}}/>
       <Stack.Screen name="GenerarReportes" component={GenerarReportes} options={{ tittle: 'GR'}}/>
       <Stack.Screen name="ReportesAsistencias" component={ReportesAsistencias} options={{ title: 'RA'}}/>
