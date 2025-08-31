@@ -1,103 +1,92 @@
-// screens/Secretaria/AñadirEstudiante.js
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import uuid from 'react-native-uuid';
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
+import * as SQLite from "expo-sqlite";
+
+const db = SQLite.openDatabase("school.db");
 
 export default function AñadirEstudiante({ navigation }) {
-  const [nombre, setNombre] = useState('');
-  const [usuario, setUsuario] = useState('');
-  const [contraseña, setContraseña] = useState('');
-  const [estudiantes, setEstudiantes] = useState([]);
+  const [nombre, setNombre] = useState("");
+  const [correo, setCorreo] = useState("");
 
-  // Cargar estudiantes al iniciar
+  // Crear tabla si no existe
   useEffect(() => {
-    const cargarEstudiantes = async () => {
-      try {
-        const data = await AsyncStorage.getItem('estudiantes');
-        if (data) {
-          setEstudiantes(JSON.parse(data));
-        }
-      } catch (error) {
-        console.log('Error cargando estudiantes:', error);
-      }
-    };
-    cargarEstudiantes();
+    db.transaction((tx) => {
+      tx.executeSql(
+        `CREATE TABLE IF NOT EXISTS usuarios (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          nombre TEXT NOT NULL,
+          correo TEXT UNIQUE NOT NULL,
+          rol TEXT NOT NULL
+        );`
+      );
+    });
   }, []);
 
-  const handleGuardar = async () => {
-    if (!nombre.trim() || !usuario.trim() || !contraseña.trim()) {
-      Alert.alert('Error', 'Todos los campos son obligatorios.');
+  // Guardar estudiante con rol
+  const guardarEstudiante = () => {
+    if (!nombre || !correo) {
+      Alert.alert("Error", "Por favor, completa todos los campos");
       return;
     }
 
-    const nuevoEstudiante = {
-      id: uuid.v4(), // genera un id único
-      nombre,
-      usuario,
-      contraseña,
-      role: 'estudiante',
-    };
-
-    const nuevaLista = [...estudiantes, nuevoEstudiante];
-
-    try {
-      await AsyncStorage.setItem('estudiantes', JSON.stringify(nuevaLista));
-      setEstudiantes(nuevaLista);
-
-      // Limpiar campos después de guardar
-      setNombre('');
-      setUsuario('');
-      setContraseña('');
-
-      Alert.alert('Éxito', 'Estudiante registrado correctamente.');
-      navigation.navigate('ListaEstudiantes'); // redirigir directamente a la lista
-    } catch (error) {
-      console.log('Error guardando estudiante:', error);
-      Alert.alert('Error', 'No se pudo guardar el estudiante.');
-    }
+    db.transaction((tx) => {
+      tx.executeSql(
+        "INSERT INTO usuarios (nombre, correo, rol) VALUES (?, ?, ?);",
+        [nombre, correo, "estudiante"], // el rol siempre será "estudiante"
+        (_, result) => {
+          Alert.alert("Éxito", "Estudiante agregado correctamente");
+          setNombre("");
+          setCorreo("");
+          navigation.navigate("StudentHome"); // después de guardar, vuelve a StudentHome
+        },
+        (_, error) => {
+          console.log(error);
+          Alert.alert("Error", "No se pudo guardar el estudiante (correo duplicado?)");
+          return true; // detener la transacción en caso de error
+        }
+      );
+    });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Nombre:</Text>
+      <Text style={styles.title}>Añadir Estudiante</Text>
       <TextInput
         style={styles.input}
+        placeholder="Nombre del estudiante"
         value={nombre}
         onChangeText={setNombre}
-        placeholder="Ingrese nombre"
       />
-
-      <Text style={styles.label}>Usuario:</Text>
       <TextInput
         style={styles.input}
-        value={usuario}
-        onChangeText={setUsuario}
-        placeholder="Ingrese usuario"
+        placeholder="Correo del estudiante"
+        value={correo}
+        onChangeText={setCorreo}
+        keyboardType="email-address"
       />
-
-      <Text style={styles.label}>Contraseña:</Text>
-      <TextInput
-        style={styles.input}
-        secureTextEntry
-        value={contraseña}
-        onChangeText={setContraseña}
-        placeholder="Ingrese contraseña"
-      />
-
-      <Button title="Guardar" onPress={handleGuardar} />
+      <Button title="Guardar Estudiante" onPress={guardarEstudiante} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-  label: { fontWeight: 'bold', marginBottom: 5 },
+  container: {
+    flex: 1,
+    padding: 20,
+    justifyContent: "center",
+    backgroundColor: "#fff",
+  },
+  title: {
+    fontSize: 22,
+    marginBottom: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+  },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    marginBottom: 12,
+    borderColor: "#aaa",
+    borderRadius: 8,
     padding: 10,
-    borderRadius: 6,
+    marginBottom: 15,
   },
 });
