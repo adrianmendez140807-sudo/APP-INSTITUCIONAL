@@ -40,7 +40,9 @@ export default function AppNavigator() {
       <Stack.Screen name="CoordinadorHome" component={CoordinadorHome} options={{ title: 'Coordinación' }} />
       <Stack.Screen name="RectorHome" component={RectorHome} options={{ title: 'Rectoría' }} />
       <Stack.Screen name="DocenteHome" component={DocenteHome} options={{ title: 'Docente' }} />
-      <Stack.Screen name="EstudianteHome" component={StudentHome} options={{ title: 'Estudiante' }} />
+
+      {/*Rutas de Estudiante */}
+      <Stack.Screen name="StudiantHome" component={StudentHome} options={{ title: 'Estudiante' }} />
 
       {/* Rutas de secretaria */}
       <Stack.Screen name="Estudiante" component={AñadirEstudiante} options={{ title: 'Agregar Estudiante' }} />

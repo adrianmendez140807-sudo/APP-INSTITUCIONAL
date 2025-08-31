@@ -1,115 +1,126 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LinearGradient } from 'expo-linear-gradient';
+// LoginScreen.js
+import React, { useState, useEffect } from "react";
+import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
+import * as SQLite from "expo-sqlite";
+
+const db = SQLite.openDatabase("usuarios.db");
 
 export default function LoginScreen({ navigation }) {
-  const [usuario, setUsuario] = useState('');
-  const [contraseña, setContraseña] = useState('');
-  const [recordar, setRecordar] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
+  // Crear tabla usuarios y usuarios por defecto
   useEffect(() => {
-    const cargarUsuario = async () => {
-      const savedUser = await AsyncStorage.getItem('savedUser');
-      if (savedUser) {
-        setUsuario(savedUser);
-        setRecordar(true);
-      }
-    };
-    cargarUsuario();
+    db.transaction((tx) => {
+      tx.executeSql(
+        "CREATE TABLE IF NOT EXISTS usuarios (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, role TEXT);"
+      );
+
+      // Insertar usuarios iniciales solo si no existen
+      tx.executeSql(
+        "SELECT * FROM usuarios WHERE role IN ('Secretaria', 'Rector', 'Coordinacion');",
+        [],
+        (_, { rows }) => {
+          if (rows.length === 0) {
+            tx.executeSql(
+              "INSERT INTO usuarios (username, password, role) VALUES (?, ?, ?);",
+              ["secretaria", "1234", "Secretaria"]
+            );
+            tx.executeSql(
+              "INSERT INTO usuarios (username, password, role) VALUES (?, ?, ?);",
+              ["rector", "1234", "Rector"]
+            );
+            tx.executeSql(
+              "INSERT INTO usuarios (username, password, role) VALUES (?, ?, ?);",
+              ["coordinacion", "1234", "Coordinacion"]
+            );
+          }
+        }
+      );
+    });
   }, []);
 
-  const handleLogin = async () => {
-    if (!usuario.trim() || !contraseña.trim()) {
-      Alert.alert('Error', 'Debes llenar todos los campos');
+  const handleLogin = () => {
+    if (!username || !password) {
+      Alert.alert("Error", "Por favor ingresa usuario y contraseña");
       return;
     }
 
-    if (recordar) {
-      await AsyncStorage.setItem('savedUser', usuario);
-    } else {
-      await AsyncStorage.removeItem('savedUser');
-    }
-
-    await AsyncStorage.setItem('currentUser', usuario);
-
-    switch (usuario.toLowerCase()) {
-      case 'secretaria':
-        navigation.replace('SecretariaHome');
-        break;
-      case 'rectoria':
-        navigation.replace('RectorHome');
-        break;
-      case 'coordinacion':
-        navigation.replace('CoordinadorHome');
-        break;
-      case 'docente':
-        navigation.replace('DocenteHome');
-        break;
-      case 'estudiante':
-        navigation.replace('EstudianteHome');
-        break;
-      default:
-        Alert.alert('Error', 'Usuario no reconocido');
-    }
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM usuarios WHERE username = ? AND password = ?;",
+        [username, password],
+        (_, { rows }) => {
+          if (rows.length > 0) {
+            const user = rows._array[0];
+            switch (user.role) {
+              case "Secretaria":
+                navigation.replace("SecretariaHome");
+                break;
+              case "Rector":
+                navigation.replace("RectorHome");
+                break;
+              case "Coordinacion":
+                navigation.replace("CoordinacionHome");
+                break;
+              case "Docente":
+                navigation.replace("DocenteHome");
+                break;
+              case "Estudiante":
+                navigation.replace("StudentHome");
+                break;
+              default:
+                Alert.alert("Error", "Rol no reconocido");
+                break;
+            }
+          } else {
+            Alert.alert("Error", "Usuario o contraseña incorrectos");
+          }
+        }
+      );
+    });
   };
 
   return (
-    <ImageBackground
-      source={{ uri: 'https://images.unsplash.com/photo-1523580846011-d3a5bc25702b' }}
-      style={styles.background}
-      blurRadius={3}
-    >
-      <LinearGradient colors={['rgba(0,0,0,0.7)', 'rgba(50,50,150,0.7)']} style={styles.overlay}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Bienvenido</Text>
-
-          <TextInput
-            style={styles.input}
-            placeholder="Usuario"
-            placeholderTextColor="#ccc"
-            value={usuario}
-            onChangeText={setUsuario}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Contraseña"
-            placeholderTextColor="#ccc"
-            secureTextEntry
-            value={contraseña}
-            onChangeText={setContraseña}
-          />
-
-          <TouchableOpacity
-            style={[styles.checkbox, recordar && styles.checkboxChecked]}
-            onPress={() => setRecordar(!recordar)}
-          >
-            <Text style={styles.checkboxText}>
-              {recordar ? '✓ ' : ''}Recordar usuario
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <LinearGradient colors={['#ff7e5f', '#feb47b']} style={styles.gradientButton}>
-              <Text style={styles.buttonText}>Iniciar Sesión</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      </LinearGradient>
-    </ImageBackground>
+    <View style={styles.container}>
+      <Text style={styles.title}>Inicio de Sesión</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Usuario"
+        value={username}
+        onChangeText={setUsername}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
+      <Button title="Ingresar" onPress={handleLogin} />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  background: { flex: 1 },
-  overlay: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  container: { width: '85%', padding: 25, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 20 },
-  title: { fontSize: 28, color: '#fff', fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
-  input: { width: '100%', padding: 15, backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: 10, marginBottom: 15, color: '#fff' },
-  checkbox: { marginBottom: 15 },
-  checkboxChecked: { backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 5 },
-  checkboxText: { color: '#fff' },
-  button: { width: '100%', borderRadius: 10, overflow: 'hidden', marginTop: 10 },
-  gradientButton: { padding: 15, alignItems: 'center' },
-  buttonText: { color: '#fff', fontSize: 18, fontWeight: 'bold' }
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    padding: 20,
+    backgroundColor: "#f5f5f5",
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 30,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 15,
+    backgroundColor: "#fff",
+  },
 });

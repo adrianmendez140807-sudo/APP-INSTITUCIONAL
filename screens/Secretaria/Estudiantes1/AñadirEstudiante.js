@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'react-native-uuid';
 
 export default function AñadirEstudiante({ navigation }) {
   const [nombre, setNombre] = useState('');
@@ -32,11 +32,11 @@ export default function AñadirEstudiante({ navigation }) {
     }
 
     const nuevoEstudiante = {
-      id: uuidv4(),
+      id: uuid.v4(), // genera un id único
       nombre,
       usuario,
       contraseña,
-      role: 'estudiante'
+      role: 'estudiante',
     };
 
     const nuevaLista = [...estudiantes, nuevoEstudiante];
@@ -44,8 +44,14 @@ export default function AñadirEstudiante({ navigation }) {
     try {
       await AsyncStorage.setItem('estudiantes', JSON.stringify(nuevaLista));
       setEstudiantes(nuevaLista);
+
+      // Limpiar campos después de guardar
+      setNombre('');
+      setUsuario('');
+      setContraseña('');
+
       Alert.alert('Éxito', 'Estudiante registrado correctamente.');
-      navigation.goBack();
+      navigation.navigate('ListaEstudiantes'); // redirigir directamente a la lista
     } catch (error) {
       console.log('Error guardando estudiante:', error);
       Alert.alert('Error', 'No se pudo guardar el estudiante.');
@@ -54,14 +60,30 @@ export default function AñadirEstudiante({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text>Nombre:</Text>
-      <TextInput style={styles.input} value={nombre} onChangeText={setNombre} />
+      <Text style={styles.label}>Nombre:</Text>
+      <TextInput
+        style={styles.input}
+        value={nombre}
+        onChangeText={setNombre}
+        placeholder="Ingrese nombre"
+      />
 
-      <Text>Usuario:</Text>
-      <TextInput style={styles.input} value={usuario} onChangeText={setUsuario} />
+      <Text style={styles.label}>Usuario:</Text>
+      <TextInput
+        style={styles.input}
+        value={usuario}
+        onChangeText={setUsuario}
+        placeholder="Ingrese usuario"
+      />
 
-      <Text>Contraseña:</Text>
-      <TextInput style={styles.input} secureTextEntry value={contraseña} onChangeText={setContraseña} />
+      <Text style={styles.label}>Contraseña:</Text>
+      <TextInput
+        style={styles.input}
+        secureTextEntry
+        value={contraseña}
+        onChangeText={setContraseña}
+        placeholder="Ingrese contraseña"
+      />
 
       <Button title="Guardar" onPress={handleGuardar} />
     </View>
@@ -69,6 +91,13 @@ export default function AñadirEstudiante({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  input: { borderWidth: 1, marginBottom: 12, padding: 8, borderRadius: 4 }
+  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
+  label: { fontWeight: 'bold', marginBottom: 5 },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    marginBottom: 12,
+    padding: 10,
+    borderRadius: 6,
+  },
 });
