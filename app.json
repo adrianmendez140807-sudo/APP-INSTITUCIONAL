@@ -40,6 +40,9 @@
     },
     "updates": {
       "url": "https://u.expo.dev/065af3c1-7dba-4847-bdfe-632b31a2f218"
-    }
+    },
+    "plugins": [
+      "expo-sqlite"
+    ]
   }
 }
