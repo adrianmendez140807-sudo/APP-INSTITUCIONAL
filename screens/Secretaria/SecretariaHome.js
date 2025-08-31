@@ -1,8 +1,9 @@
 // screens/Secretaria/SecretariaHome.js
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation, Platform, UIManager } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation, Platform, UIManager, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
+import { getUsers, addUser, deleteUser } from '../../database'; // integración BD
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -10,6 +11,17 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 
 export default function SecretariaHome({ navigation }) {
   const [expanded, setExpanded] = useState(null);
+  const [users, setUsers] = useState([]);
+
+  // cargar usuarios
+  const loadUsers = async () => {
+    const all = await getUsers();
+    setUsers(all);
+  };
+
+  useEffect(() => {
+    loadUsers();
+  }, []);
 
   const toggleExpand = (section) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);

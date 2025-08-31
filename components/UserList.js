@@ -1,26 +1,28 @@
-// components/LogoutButton.js
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
 
-export default function LogoutButton({ navigation }) {
-  const handleLogout = async () => {
-    try {
-      await AsyncStorage.removeItem('currentUser');
-      navigation.replace('Login');
-    } catch (e) {
-      console.log('Error al cerrar sesión:', e);
-    }
-  };
-
+export default function UserList({ user, onDelete }) {
   return (
-    <TouchableOpacity style={styles.btn} onPress={handleLogout}>
-      <Text style={styles.text}>Cerrar sesión</Text>
-    </TouchableOpacity>
+    <View style={styles.card}>
+      <Text style={styles.text}>
+        {user.username} ({user.role})
+      </Text>
+      {user.role !== "rectoria" &&
+       user.role !== "coordinacion" &&
+       user.role !== "secretaria" && (
+        <Button title="Eliminar" onPress={() => onDelete(user.id)} />
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  btn: { padding: 10, backgroundColor: '#e74c3c', borderRadius: 6, alignItems: 'center' },
-  text: { color: '#fff', fontWeight: 'bold' },
+  card: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: "#ddd",
+  },
+  text: { fontSize: 16 },
 });
