@@ -1,12 +1,11 @@
 // navigation/AppNavigator.js
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 // Pantallas
 import LoadingScreen from '../screens/Otros/LoadingScreen';
 import LoginScreen from '../screens/Otros/LoginScreen';
-import AdminHomeScreen from '../screens/Otros/AdminHome'; // si
+import AdminHomeScreen from '../screens/Otros/AdminScreen';
 import SecretariaHome from '../screens/Secretaria/SecretariaHome';
 import CoordinadorHome from '../screens/Coordinacion/CoordinadorHome';
 import RectorHome from '../screens/Rectoria/RectorHome';
@@ -53,12 +52,12 @@ export default function AppNavigator() {
       <Stack.Screen name="DeshabilitarNotas" component={DeshabilitarNotas} options={{ title: 'DN' }} />
       <Stack.Screen name="GestionNotas" component={GestionNotas} options={{ title: 'GN' }} />
       <Stack.Screen name="HabilitarNotas" component={HabilitarNotas} options={{ title: 'HN' }} />
-      <Stack.Screen name="CircularesAvisos" component={CircularesAvisos} options={{ tittle: 'CA'}}/>
-      <Stack.Screen name="MensajesEstudiantes" component={MensajesEstudiantes} options={{ tittle: 'ME'}}/>
-      <Stack.Screen name="ArchivosDigitales" component={ArchivosDigitales} options={{ tittle: 'AD'}}/>
-      <Stack.Screen name="DocumentosOficiales" component={DocumentosOficiales} options={{ tittle: 'DO'}}/>
-      <Stack.Screen name="GestionarLibros" component={GestionarLibros} options={{ tittle: 'GL'}}/>
-      <Stack.Screen name="GenerarReportes" component={GenerarReportes} options={{ tittle: 'GR'}}/>
+      <Stack.Screen name="CircularesAvisos" component={CircularesAvisos} options={{ title: 'CA'}}/>
+      <Stack.Screen name="MensajesEstudiantes" component={MensajesEstudiantes} options={{ title: 'ME'}}/>
+      <Stack.Screen name="ArchivosDigitales" component={ArchivosDigitales} options={{ title: 'AD'}}/>
+      <Stack.Screen name="DocumentosOficiales" component={DocumentosOficiales} options={{ title: 'DO'}}/>
+      <Stack.Screen name="GestionarLibros" component={GestionarLibros} options={{ title: 'GL'}}/>
+      <Stack.Screen name="GenerarReportes" component={GenerarReportes} options={{ title: 'GR'}}/>
       <Stack.Screen name="ReportesAsistencias" component={ReportesAsistencias} options={{ title: 'RA'}}/>
     </Stack.Navigator>
   );
