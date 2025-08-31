@@ -11,7 +11,6 @@ import SecretariaHome from '../screens/Secretaria/SecretariaHome';
 import CoordinadorHome from '../screens/Coordinacion/CoordinadorHome';
 import RectorHome from '../screens/Rectoria/RectorHome';
 import DocenteHome from '../screens/Docente/DocenteHome';
-import EstudianteHome from '../screens/Estudiante/StudentHome'; // componente 'Student'
 import AñadirEstudiante from '../screens/Secretaria/Estudiantes1/AñadirEstudiante';
 import AgregarDocente from '../screens/Secretaria/Docentes1/AgregarDocente';
 import ListaDocentes from '../screens/Secretaria/Docentes1/ListaDocentes';
@@ -43,7 +42,7 @@ export default function AppNavigator() {
       <Stack.Screen name="DocenteHome" component={DocenteHome} options={{ title: 'Docente' }} />
 
       {/*Rutas de Estudiante */}
-      <Stack.Screen name="StudiantHome" component={StudentHome} options={{ title: 'Estudiante' }} />
+      <Stack.Screen name="StudentHome" component={StudentHome} options={{ title: 'Estudiante' }} />
 
       {/* Rutas de secretaria */}
       <Stack.Screen name="Estudiante" component={AñadirEstudiante} options={{ title: 'Agregar Estudiante' }} />
