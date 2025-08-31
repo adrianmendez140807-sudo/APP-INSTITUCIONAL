@@ -1,8 +1,8 @@
 // database/db.js
-import * as SQLite from "expo-sqlite";
+import { openDatabaseSync } from 'expo-sqlite/next';
 
 // Apertura de la base de datos
-const db = SQLite.openDatabase("app.db");
+const db = openDatabaseSync('app.db');
 
 // Inicializar la base de datos con usuarios base
 export const initDB = () => {
