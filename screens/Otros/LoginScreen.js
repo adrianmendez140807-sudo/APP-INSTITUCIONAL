@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
 import * as SQLite from "expo-sqlite";
 
-
+const db = SQLite.openDatabase("usuarios.db");
 
 export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState("");
@@ -11,9 +11,6 @@ export default function LoginScreen({ navigation }) {
 
   // Crear tabla usuarios y usuarios por defecto
   useEffect(() => {
-
-    const db = SQLite.openDatabase("usuarios.db");
-
     db.transaction((tx) => {
       tx.executeSql(
         "CREATE TABLE IF NOT EXISTS usuarios (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, role TEXT);"
