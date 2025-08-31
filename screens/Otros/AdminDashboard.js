@@ -1,4 +1,3 @@
-// screens/AdminDashboard.js
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
@@ -14,7 +13,7 @@ const AdminDashboard = ({ navigation }) => {
         />
       </View>
 
-      {/* Puedes añadir más botones para otras funciones aquí */}
+      {/* Pa que no se me olvide como agregar botones, solo copia lo de arriba */}
     </View>
   );
 };

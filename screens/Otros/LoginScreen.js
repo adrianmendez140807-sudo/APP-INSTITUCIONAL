@@ -1,45 +1,41 @@
-// LoginScreen.js
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, Button, Alert, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import * as SQLite from "expo-sqlite";
+import { useNavigation } from "@react-navigation/native";
 
-const db = SQLite.openDatabase("usuarios.db");
-
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigation = useNavigation();
 
-  // Crear tabla usuarios y usuarios por defecto
+  // Abrir BD
+  const db = SQLite.openDatabase("school.db");
+
+  // Crear tabla usuarios si no existe
   useEffect(() => {
     db.transaction((tx) => {
       tx.executeSql(
-        "CREATE TABLE IF NOT EXISTS usuarios (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT, role TEXT);"
+        `CREATE TABLE IF NOT EXISTS users (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT UNIQUE,
+          password TEXT,
+          role TEXT
+        );`
       );
+    });
 
-      // Insertar usuarios iniciales solo si no existen
+    // Insertar usuarios base si no existen
+    db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM usuarios WHERE role IN ('Secretaria', 'Rector', 'Coordinacion');",
-        [],
-        (_, { rows }) => {
-          if (rows.length === 0) {
-            tx.executeSql(
-              "INSERT INTO usuarios (username, password, role) VALUES (?, ?, ?);",
-              ["secretaria", "1234", "Secretaria"]
-            );
-            tx.executeSql(
-              "INSERT INTO usuarios (username, password, role) VALUES (?, ?, ?);",
-              ["rector", "1234", "Rector"]
-            );
-            tx.executeSql(
-              "INSERT INTO usuarios (username, password, role) VALUES (?, ?, ?);",
-              ["coordinacion", "1234", "Coordinacion"]
-            );
-          }
-        }
+        `INSERT OR IGNORE INTO users (username, password, role) VALUES 
+        ('secretaria', '1234', 'secretaria'),
+        ('rector', '1234', 'rector'),
+        ('coordinacion', '1234', 'coordinacion');`
       );
     });
   }, []);
 
+  // Función de login
   const handleLogin = () => {
     if (!username || !password) {
       Alert.alert("Error", "Por favor ingresa usuario y contraseña");
@@ -48,30 +44,25 @@ export default function LoginScreen({ navigation }) {
 
     db.transaction((tx) => {
       tx.executeSql(
-        "SELECT * FROM usuarios WHERE username = ? AND password = ?;",
+        "SELECT * FROM users WHERE username = ? AND password = ?",
         [username, password],
         (_, { rows }) => {
           if (rows.length > 0) {
-            const user = rows._array[0];
-            switch (user.role) {
-              case "Secretaria":
-                navigation.replace("SecretariaHome");
-                break;
-              case "Rector":
-                navigation.replace("RectorHome");
-                break;
-              case "Coordinacion":
-                navigation.replace("CoordinacionHome");
-                break;
-              case "Docente":
-                navigation.replace("DocenteHome");
-                break;
-              case "Estudiante":
-                navigation.replace("StudentHome");
-                break;
-              default:
-                Alert.alert("Error", "Rol no reconocido");
-                break;
+            const user = rows.item(0);
+
+            // Redirigir según el rol
+            if (user.role === "secretaria") {
+              navigation.replace("SecretariaHome");
+            } else if (user.role === "rector") {
+              navigation.replace("RectorHome");
+            } else if (user.role === "coordinacion") {
+              navigation.replace("CoordinacionHome");
+            } else if (user.role === "docente") {
+              navigation.replace("DocenteHome");
+            } else if (user.role === "estudiante") {
+              navigation.replace("StudentHome"); // tu pantalla de estudiante
+            } else {
+              Alert.alert("Error", "Rol no reconocido");
             }
           } else {
             Alert.alert("Error", "Usuario o contraseña incorrectos");
@@ -83,44 +74,66 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Inicio de Sesión</Text>
+      <Text style={styles.title}>Iniciar Sesión</Text>
+
       <TextInput
-        style={styles.input}
         placeholder="Usuario"
+        style={styles.input}
         value={username}
         onChangeText={setUsername}
       />
+
       <TextInput
-        style={styles.input}
         placeholder="Contraseña"
-        secureTextEntry
+        style={styles.input}
         value={password}
+        secureTextEntry
         onChangeText={setPassword}
       />
-      <Button title="Ingresar" onPress={handleLogin} />
+
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Entrar</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
+// Estilos
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#f9f9f9",
+    alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    backgroundColor: "#f5f5f5",
   },
   title: {
     fontSize: 26,
     fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 30,
+    marginBottom: 40,
+    color: "#333",
   },
   input: {
-    borderWidth: 1,
+    width: "100%",
+    height: 50,
     borderColor: "#ccc",
+    borderWidth: 1,
     borderRadius: 10,
-    padding: 10,
-    marginBottom: 15,
+    marginBottom: 20,
+    paddingHorizontal: 15,
     backgroundColor: "#fff",
+  },
+  button: {
+    width: "100%",
+    height: 50,
+    backgroundColor: "#007bff",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
