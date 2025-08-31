@@ -10,7 +10,7 @@ import SecretariaHome from '../screens/Secretaria/SecretariaHome';
 import CoordinadorHome from '../screens/Coordinacion/CoordinadorHome';
 import RectorHome from '../screens/Rectoria/RectorHome';
 import DocenteHome from '../screens/Docente/DocenteHome';
-import EstudianteHome from '../screens/Estudiante/Student'; // componente 'Student'
+import EstudianteHome from '../screens/Estudiante/StudentHome'; // componente 'Student'
 import AñadirEstudiante from '../screens/Secretaria/Estudiantes1/AñadirEstudiante';
 import AgregarDocente from '../screens/Secretaria/Docentes1/AgregarDocente';
 import ListaDocentes from '../screens/Secretaria/Docentes1/ListaDocentes';
@@ -26,6 +26,7 @@ import GestionarLibros from '../screens/Secretaria/Documentos/GestionarLibros';
 import GenerarReportes from '../screens/Secretaria/Reportes/GenerarReportes';
 import ReportesAsistencias from '../screens/Secretaria/Reportes/ReportesAsistencias';
 import DocumentosOficiales from '../screens/Secretaria/Documentos/DocumentosOficiales';
+import StudentHome from '../screens/Estudiante/StudentHome';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,7 +40,7 @@ export default function AppNavigator() {
       <Stack.Screen name="CoordinadorHome" component={CoordinadorHome} options={{ title: 'Coordinación' }} />
       <Stack.Screen name="RectorHome" component={RectorHome} options={{ title: 'Rectoría' }} />
       <Stack.Screen name="DocenteHome" component={DocenteHome} options={{ title: 'Docente' }} />
-      <Stack.Screen name="EstudianteHome" component={EstudianteHome} options={{ title: 'Estudiante' }} />
+      <Stack.Screen name="EstudianteHome" component={StudentHome} options={{ title: 'Estudiante' }} />
 
       {/* Rutas de secretaria */}
       <Stack.Screen name="Estudiante" component={AñadirEstudiante} options={{ title: 'Agregar Estudiante' }} />
