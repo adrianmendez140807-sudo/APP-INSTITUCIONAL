@@ -71,7 +71,7 @@ const seedMainUsers = async () => {
   }
 };
 
-// Inicializa la base de datos y crea la tabla si no existe
+// Inicializa la base de datos y realiza migración si es necesario
 const initDatabase = async () => {
   try {
     await db.execAsync(`
@@ -81,10 +81,25 @@ const initDatabase = async () => {
         name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
         password TEXT NOT NULL,
-        role TEXT NOT NULL CHECK(role IN ('docente','estudiante','secretaria','rector','coordinador')),
-        documentNumber TEXT UNIQUE
+        role TEXT NOT NULL CHECK(role IN ('docente','estudiante','secretaria','rector','coordinador'))
       );
     `);
+
+    // Intentar agregar la columna documentNumber si no existe
+    try {
+      await db.execAsync(`ALTER TABLE users ADD COLUMN documentNumber TEXT UNIQUE;`);
+      console.log("🆕 Columna documentNumber agregada.");
+    } catch (err) {
+      // Si ya existe, ignora el error
+      if (err.message && err.message.includes('duplicate column name')) {
+        console.log("ℹ️ La columna documentNumber ya existe.");
+      } else if (err.message && err.message.includes('no such table')) {
+        // La tabla no existe, ignora
+      } else {
+        throw err;
+      }
+    }
+
     console.log("📦 Tabla 'users' lista.");
     await seedMainUsers(); // Crea los usuarios principales si no existen
   } catch (error) {
