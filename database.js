@@ -1,64 +1,43 @@
 // database.js
 import * as SQLite from 'expo-sqlite';
 
-// ✅ Conexión a la base de datos (modo async recomendado en SDK 53)
-export const openDatabase = async () => {
-  return await SQLite.openDatabaseAsync('myDatabase.db');
-};
+// ✅ Ahora se usa openDatabaseAsync (asíncrono)
+let db;
 
-// ✅ Inicialización de tablas
-export const initDatabase = async () => {
-  try {
-    const db = await openDatabase();
+export async function initDatabase() {
+  if (!db) {
+    db = await SQLite.openDatabaseAsync('lavadero.db');
 
-    // Crear tabla de usuarios (ejemplo)
+    // Crear tablas si no existen
     await db.execAsync(`
-      CREATE TABLE IF NOT EXISTS users (
+      CREATE TABLE IF NOT EXISTS usuarios (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        email TEXT NOT NULL UNIQUE
+        nombre TEXT NOT NULL,
+        correo TEXT NOT NULL,
+        contrasena TEXT NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS servicios (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        nombre TEXT NOT NULL,
+        precio REAL NOT NULL
+      );
+
+      CREATE TABLE IF NOT EXISTS agendados (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        usuario_id INTEGER,
+        servicio_id INTEGER,
+        fecha TEXT NOT NULL,
+        FOREIGN KEY(usuario_id) REFERENCES usuarios(id),
+        FOREIGN KEY(servicio_id) REFERENCES servicios(id)
       );
     `);
-
-    // Crear tabla de servicios (ejemplo)
-    await db.execAsync(`
-      CREATE TABLE IF NOT EXISTS services (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
-        service_name TEXT NOT NULL,
-        date TEXT NOT NULL,
-        FOREIGN KEY(user_id) REFERENCES users(id)
-      );
-    `);
-
-    console.log("✅ Base de datos inicializada correctamente");
-  } catch (error) {
-    console.error("❌ Error al inicializar la base de datos:", error);
   }
-};
+  return db;
+}
 
-// ✅ Insertar usuario
-export const insertUser = async (name, email) => {
-  try {
-    const db = await openDatabase();
-    await db.runAsync(
-      "INSERT INTO users (name, email) VALUES (?, ?);",
-      [name, email]
-    );
-    console.log("✅ Usuario insertado");
-  } catch (error) {
-    console.error("❌ Error al insertar usuario:", error);
-  }
-};
-
-// ✅ Obtener usuarios
-export const getUsers = async () => {
-  try {
-    const db = await openDatabase();
-    const result = await db.getAllAsync("SELECT * FROM users;");
-    return result;
-  } catch (error) {
-    console.error("❌ Error al obtener usuarios:", error);
-    return [];
-  }
-};
+// ✅ Obtener la instancia de la base de datos ya inicializada
+export function getDatabase() {
+  if (!db) throw new Error('La base de datos no está inicializada. Llama primero a initDatabase()');
+  return db;
+}
