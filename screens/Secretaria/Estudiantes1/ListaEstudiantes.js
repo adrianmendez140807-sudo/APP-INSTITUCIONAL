@@ -1,59 +1,47 @@
-// screens/Secretaria/ListaEstudiantes.js
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import dbService from '../../../database';
 
-export default function ListaEstudiantes() {
-  const [estudiantes, setEstudiantes] = useState([]);
+export default function ListaEstudiantes({ navigation }) {
+  const [students, setStudents] = useState([]);
 
   useEffect(() => {
-    const cargarEstudiantes = async () => {
-      try {
-        const data = await AsyncStorage.getItem('estudiantes');
-        if (data) {
-          setEstudiantes(JSON.parse(data));
-        }
-      } catch (error) {
-        console.log('Error cargando estudiantes:', error);
-      }
+    const fetchStudents = async () => {
+      const all = await dbService.getUsers();
+      // Filtra solo estudiantes
+      setStudents(all.filter(u => u.role === 'estudiante'));
     };
+    fetchStudents();
+    // Puedes agregar un listener para actualizar la lista cuando vuelvas a esta pantalla
+    const unsubscribe = navigation.addListener('focus', fetchStudents);
+    return unsubscribe;
+  }, [navigation]);
 
-    const focusListener = cargarEstudiantes; // para que se actualice al volver
-    focusListener();
-
-  }, []);
+  const handleSelectStudent = (student) => {
+    navigation.navigate('BaseDatosEstudiantes', { student });
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Lista de Estudiantes</Text>
-      {estudiantes.length === 0 ? (
-        <Text>No hay estudiantes registrados</Text>
-      ) : (
-        <FlatList
-          data={estudiantes}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Text style={styles.nombre}>{item.nombre}</Text>
-              <Text>Usuario: {item.usuario}</Text>
-            </View>
-          )}
-        />
-      )}
+      <FlatList
+        data={students}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={styles.item} onPress={() => handleSelectStudent(item)}>
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.document}>{item.documentNumber}</Text>
+          </TouchableOpacity>
+        )}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
+  container: { flex: 1, padding: 20 },
   title: { fontSize: 22, fontWeight: 'bold', marginBottom: 15 },
-  card: {
-    backgroundColor: '#f9f9f9',
-    padding: 12,
-    marginVertical: 6,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#ddd',
-  },
-  nombre: { fontWeight: 'bold', fontSize: 16 },
+  item: { padding: 15, backgroundColor: '#eaf6ff', marginBottom: 10, borderRadius: 8 },
+  name: { fontSize: 18, fontWeight: 'bold' },
+  document: { fontSize: 14, color: '#555' },
 });
