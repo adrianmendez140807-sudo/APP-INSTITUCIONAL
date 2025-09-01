@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import dbService from '../../../database';
 
-export default function AgregarDocente() {
+export default function AñadirEstudiante() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [documentNumber, setDocumentNumber] = useState('');
   const [password, setPassword] = useState('');
-  const role = 'docente';
+  const role = 'estudiante';
 
   function validateUserData(name, email, password, role, documentNumber) {
     if (!name || !email || !password || !role || !documentNumber) return false;
@@ -18,17 +18,17 @@ export default function AgregarDocente() {
     return true;
   }
 
-  const handleAddTeacher = async () => {
+  const handleAddStudent = async () => {
     if (validateUserData(name, email, password, role, documentNumber)) {
       try {
         await dbService.addUser(name, email, password, role, documentNumber);
-        Alert.alert('Éxito', 'Docente creado correctamente');
+        Alert.alert('Éxito', 'Estudiante creado correctamente');
         setName('');
         setEmail('');
         setDocumentNumber('');
         setPassword('');
       } catch (error) {
-        Alert.alert('Error', 'No se pudo crear el docente. ¿El correo o documento ya existe?');
+        Alert.alert('Error', 'No se pudo crear el estudiante. ¿El correo o documento ya existe?');
       }
     } else {
       Alert.alert('Error', 'Datos inválidos');
@@ -37,7 +37,7 @@ export default function AgregarDocente() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Agregar Docente</Text>
+      <Text style={styles.title}>Añadir Estudiante</Text>
       <TextInput
         style={styles.input}
         placeholder="Nombre completo"
@@ -65,7 +65,7 @@ export default function AgregarDocente() {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="Agregar Docente" onPress={handleAddTeacher} />
+      <Button title="Agregar Estudiante" onPress={handleAddStudent} />
     </View>
   );
 }

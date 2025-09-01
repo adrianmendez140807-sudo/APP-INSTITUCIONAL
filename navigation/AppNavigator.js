@@ -25,6 +25,7 @@ import GenerarReportes from '../screens/Secretaria/Reportes/GenerarReportes';
 import ReportesAsistencias from '../screens/Secretaria/Reportes/ReportesAsistencias';
 import DocumentosOficiales from '../screens/Secretaria/Documentos/DocumentosOficiales';
 import StudentHome from '../screens/Estudiante/StudentHome';
+import BaseDatosDocentes from '../screens/Secretaria/Docentes1/DataBaseTeacher';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +59,7 @@ export default function AppNavigator() {
       <Stack.Screen name="GestionarLibros" component={GestionarLibros} options={{ title: 'GL'}}/>
       <Stack.Screen name="GenerarReportes" component={GenerarReportes} options={{ title: 'GR'}}/>
       <Stack.Screen name="ReportesAsistencias" component={ReportesAsistencias} options={{ title: 'RA'}}/>
+      <Stack.Screen name="BaseDatosDocentes" component={BaseDatosDocentes} options={{ title: 'BDDs' }} />
     </Stack.Navigator>
   );
 }
