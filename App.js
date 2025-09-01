@@ -1,20 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigator from './navigation/AppNavigator';
 import { initDatabase } from './database';
+import LoadingScreen from './screens/Otros/LoadingScreen';
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     async function setup() {
       try {
         await initDatabase();
+        setLoading(false);
         console.log("✅ Base de datos lista");
       } catch (error) {
         console.error("❌ Error inicializando la base de datos", error);
+        setLoading(false);
       }
     }
     setup();
   }, []);
+
+  if (loading) return <LoadingScreen />;
 
   return (
     <NavigationContainer>

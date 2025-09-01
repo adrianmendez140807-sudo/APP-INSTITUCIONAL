@@ -6,19 +6,37 @@ export default function LoginScreen({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async () => {
-    const user = await loginUser(username, password);
-    if (!user) {
-      Alert.alert("Error", "Credenciales incorrectas");
-      return;
+// Ejemplo dentro de LoginScreen.js
+const handleLogin = async () => {
+  const user = await dbService.getUserByLogin(email, password);
+  if (user) {
+    switch (user.role) {
+      case 'docente':
+        navigation.navigate('DocenteHome');
+        break;
+      case 'estudiante':
+        navigation.navigate('StudentHome');
+        break;
+      case 'coordinador':
+        navigation.navigate('CoordinadorHome');
+        break;
+      case 'rector':
+        navigation.navigate('RectorHome');
+        break;
+      case 'secretaria':
+        navigation.navigate('SecretariaHome');
+        break;
+      case 'admin':
+        navigation.navigate('AdminDashboard');
+        break;
+      default:
+        // Si el rol no existe, muestra un error
+        Alert.alert('Error', 'Rol de usuario no reconocido');
     }
-
-    if (user.role === "secretaria") {
-      navigation.replace("Secretaria", { user });
-    } else {
-      navigation.replace("Admin", { user });
-    }
-  };
+  } else {
+    Alert.alert('Error', 'Usuario o contraseña incorrectos');
+  }
+};
 
   return (
     <View style={styles.container}>

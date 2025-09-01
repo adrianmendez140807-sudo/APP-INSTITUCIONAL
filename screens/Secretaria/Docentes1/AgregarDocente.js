@@ -1,47 +1,77 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
-import { saveData, loadData } from '../../../storage';
-import { v4 as uuidv4 } from 'uuid';
+import dbService from '../../../database';
 
-export default function AgregarDocente({ navigation }) {
-  const [nombre, setNombre] = useState('');
-  const [usuario, setUsuario] = useState('');
-  const [contraseña, setContraseña] = useState('');
+export default function AgregarDocente() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [documentNumber, setDocumentNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const role = 'docente';
 
-  const handleGuardar = async () => {
-    if (!nombre.trim() || !usuario.trim() || !contraseña.trim()) {
-      Alert.alert('Error', 'Todos los campos son obligatorios.');
-      return;
+  function validateUserData(name, email, password, role, documentNumber) {
+    if (!name || !email || !password || !role || !documentNumber) return false;
+    if (!email.includes('@')) return false;
+    if (password.length < 6) return false;
+    if (!/^\d+$/.test(documentNumber)) return false;
+    if (documentNumber.length < 6) return false;
+    return true;
+  }
+
+  const handleAddTeacher = async () => {
+    if (validateUserData(name, email, password, role, documentNumber)) {
+      try {
+        await dbService.addUser(name, email, password, role, documentNumber);
+        Alert.alert('Éxito', 'Docente creado correctamente');
+        setName('');
+        setEmail('');
+        setDocumentNumber('');
+        setPassword('');
+      } catch (error) {
+        Alert.alert('Error', 'No se pudo crear el docente. ¿El correo o documento ya existe?');
+      }
+    } else {
+      Alert.alert('Error', 'Datos inválidos');
     }
-
-    const estudiantes = await loadData('estudiantes');
-    const nuevoEstudiante = {
-      id: uuidv4(),
-      nombre,
-      usuario,
-      contraseña,
-      role: 'estudiante'
-    };
-
-    await saveData('estudiantes', [...estudiantes, nuevoEstudiante]);
-    Alert.alert('Éxito', 'Estudiante registrado correctamente.');
-    navigation.goBack();
   };
 
   return (
     <View style={styles.container}>
-      <Text>Nombre:</Text>
-      <TextInput style={styles.input} value={nombre} onChangeText={setNombre} />
-      <Text>Usuario:</Text>
-      <TextInput style={styles.input} value={usuario} onChangeText={setUsuario} />
-      <Text>Contraseña:</Text>
-      <TextInput style={styles.input} secureTextEntry value={contraseña} onChangeText={setContraseña} />
-      <Button title="Guardar" onPress={handleGuardar} />
+      <Text style={styles.title}>Agregar Docente</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Nombre completo"
+        value={name}
+        onChangeText={setName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Correo electrónico"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Número de documento"
+        value={documentNumber}
+        onChangeText={setDocumentNumber}
+        keyboardType="numeric"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+      />
+      <Button title="Agregar Docente" onPress={handleAddTeacher} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  input: { borderWidth: 1, marginBottom: 12, padding: 8, borderRadius: 4 }
+  container: { flex: 1, padding: 20, justifyContent: 'center' },
+  title: { fontSize: 22, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
+  input: { borderWidth: 1, borderColor: '#ccc', padding: 10, marginBottom: 15, borderRadius: 5 },
 });
