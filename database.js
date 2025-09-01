@@ -1,73 +1,107 @@
 // database.js
-import * as SQLite from "expo-sqlite/next";
+import * as SQLite from "expo-sqlite";
 
-// Abrimos la base de datos (se crea si no existe)
-const db = SQLite.openDatabaseSync("users.db");
+// Abrimos o creamos la base de datos
+const db = SQLite.openDatabase("users.db");
 
-// Función para inicializar la base de datos
-export const initDatabase = async () => {
-  try {
-    await db.execAsync(`
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        email TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL,
-        role TEXT NOT NULL CHECK(role IN ('docente', 'estudiante'))
+// Inicializa la base de datos
+export const initDatabase = () => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `CREATE TABLE IF NOT EXISTS users (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT NOT NULL,
+          email TEXT UNIQUE NOT NULL,
+          password TEXT NOT NULL,
+          role TEXT NOT NULL CHECK(role IN ('docente','estudiante'))
+        );`,
+        [],
+        () => {
+          console.log("📦 Tabla 'users' lista");
+          resolve();
+        },
+        (_, error) => {
+          console.error("❌ Error creando tabla:", error);
+          reject(error);
+        }
       );
-    `);
-    console.log("📦 Tabla 'users' lista");
-  } catch (error) {
-    console.error("❌ Error al inicializar DB:", error);
-  }
+    });
+  });
 };
 
-// Insertar un nuevo usuario (docente o estudiante)
-export const addUser = async (name, email, password, role) => {
-  try {
-    await db.runAsync(
-      "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
-      [name, email, password, role]
-    );
-    console.log(`✅ Usuario ${role} agregado: ${name}`);
-  } catch (error) {
-    console.error("❌ Error al agregar usuario:", error);
-  }
+// Agregar usuario
+export const addUser = (name, email, password, role) => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
+        [name, email, password, role],
+        (_, result) => {
+          console.log(`✅ Usuario agregado: ${name} (${role})`);
+          resolve(result);
+        },
+        (_, error) => {
+          console.error("❌ Error al insertar usuario:", error);
+          reject(error);
+        }
+      );
+    });
+  });
 };
 
 // Obtener todos los usuarios
-export const getUsers = async () => {
-  try {
-    const result = await db.getAllAsync("SELECT * FROM users");
-    return result;
-  } catch (error) {
-    console.error("❌ Error al obtener usuarios:", error);
-    return [];
-  }
+export const getUsers = () => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM users",
+        [],
+        (_, { rows }) => resolve(rows._array),
+        (_, error) => {
+          console.error("❌ Error al obtener usuarios:", error);
+          reject(error);
+        }
+      );
+    });
+  });
 };
 
-// Obtener usuario por correo (para login)
-export const getUserByEmail = async (email, password) => {
-  try {
-    const result = await db.getFirstAsync(
-      "SELECT * FROM users WHERE email = ? AND password = ?",
-      [email, password]
-    );
-    return result;
-  } catch (error) {
-    console.error("❌ Error al buscar usuario:", error);
-    return null;
-  }
+// Obtener usuario por login
+export const getUserByEmail = (email, password) => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM users WHERE email = ? AND password = ?",
+        [email, password],
+        (_, { rows }) => resolve(rows._array[0]),
+        (_, error) => {
+          console.error("❌ Error al validar usuario:", error);
+          reject(error);
+        }
+      );
+    });
+  });
 };
 
-// Eliminar usuario por ID
-export const deleteUser = async (id) => {
-  try {
-    await db.runAsync("DELETE FROM users WHERE id = ?", [id]);
-    console.log(`🗑️ Usuario con id ${id} eliminado`);
-  } catch (error) {
-    console.error("❌ Error al eliminar usuario:", error);
-  }
+// Eliminar usuario
+export const deleteUser = (id) => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "DELETE FROM users WHERE id = ?",
+        [id],
+        (_, result) => {
+          console.log(`🗑 Usuario ${id} eliminado`);
+          resolve(result);
+        },
+        (_, error) => {
+          console.error("❌ Error al eliminar usuario:", error);
+          reject(error);
+        }
+      );
+    });
+  });
 };
 
 export default db;
