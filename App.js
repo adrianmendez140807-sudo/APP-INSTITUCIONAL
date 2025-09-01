@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
-import { initDB } from './database';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigator from './navigation/AppNavigator';
+import { initDatabase } from './database';
 
 export default function App() {
   useEffect(() => {
-    initDB(); // Inicializa BD al iniciar la app
+    initDatabase();
   }, []);
 
   return (

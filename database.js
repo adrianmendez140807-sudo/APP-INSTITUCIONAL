@@ -1,79 +1,64 @@
-// database/db.js
-import { openDatabaseSync } from 'expo-sqlite/next';
+// database.js
+import * as SQLite from 'expo-sqlite';
 
-// Apertura de la base de datos
-const db = openDatabaseSync('app.db');
+// ✅ Conexión a la base de datos (modo async recomendado en SDK 53)
+export const openDatabase = async () => {
+  return await SQLite.openDatabaseAsync('myDatabase.db');
+};
 
-// Inicializar la base de datos con usuarios base
-export const initDB = () => {
-  db.transaction((tx) => {
-    tx.executeSql(
-      `CREATE TABLE IF NOT EXISTS users (
+// ✅ Inicialización de tablas
+export const initDatabase = async () => {
+  try {
+    const db = await openDatabase();
+
+    // Crear tabla de usuarios (ejemplo)
+    await db.execAsync(`
+      CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE,
-        password TEXT,
-        role TEXT
-      );`
-    );
-
-    // Usuarios base del sistema
-    const defaultUsers = [
-      { username: "secretaria", password: "1234", role: "Secretaria" },
-      { username: "rector", password: "1234", role: "Rector" },
-      { username: "coordinacion", password: "1234", role: "Coordinacion" },
-    ];
-
-    defaultUsers.forEach((user) => {
-      tx.executeSql(
-        `INSERT OR IGNORE INTO users (username, password, role) VALUES (?, ?, ?);`,
-        [user.username, user.password, user.role]
+        name TEXT NOT NULL,
+        email TEXT NOT NULL UNIQUE
       );
-    });
-  });
+    `);
+
+    // Crear tabla de servicios (ejemplo)
+    await db.execAsync(`
+      CREATE TABLE IF NOT EXISTS services (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        service_name TEXT NOT NULL,
+        date TEXT NOT NULL,
+        FOREIGN KEY(user_id) REFERENCES users(id)
+      );
+    `);
+
+    console.log("✅ Base de datos inicializada correctamente");
+  } catch (error) {
+    console.error("❌ Error al inicializar la base de datos:", error);
+  }
 };
 
-// Agregar usuario (Secretaría puede añadir docentes y estudiantes)
-export const addUser = (username, password, role, callback) => {
-  db.transaction((tx) => {
-    tx.executeSql(
-      `INSERT INTO users (username, password, role) VALUES (?, ?, ?);`,
-      [username, password, role],
-      (_, result) => callback(true),
-      (_, error) => {
-        console.log("Error al agregar usuario:", error);
-        callback(false);
-      }
+// ✅ Insertar usuario
+export const insertUser = async (name, email) => {
+  try {
+    const db = await openDatabase();
+    await db.runAsync(
+      "INSERT INTO users (name, email) VALUES (?, ?);",
+      [name, email]
     );
-  });
+    console.log("✅ Usuario insertado");
+  } catch (error) {
+    console.error("❌ Error al insertar usuario:", error);
+  }
 };
 
-// Validar usuario en el login
-export const validateUser = (username, password, callback) => {
-  db.transaction((tx) => {
-    tx.executeSql(
-      `SELECT * FROM users WHERE username = ? AND password = ?;`,
-      [username, password],
-      (_, { rows }) => {
-        if (rows.length > 0) {
-          callback(rows._array[0]); // Retorna el usuario
-        } else {
-          callback(null);
-        }
-      }
-    );
-  });
+// ✅ Obtener usuarios
+export const getUsers = async () => {
+  try {
+    const db = await openDatabase();
+    const result = await db.getAllAsync("SELECT * FROM users;");
+    return result;
+  } catch (error) {
+    console.error("❌ Error al obtener usuarios:", error);
+    return [];
+  }
 };
-
-// Obtener todos los usuarios (ejemplo: lista de estudiantes/docentes)
-export const getUsersByRole = (role, callback) => {
-  db.transaction((tx) => {
-    tx.executeSql(
-      `SELECT * FROM users WHERE role = ?;`,
-      [role],
-      (_, { rows }) => callback(rows._array),
-      (_, error) => console.log("Error al obtener usuarios:", error)
-    );
-  });
-};
-
-export default db;
