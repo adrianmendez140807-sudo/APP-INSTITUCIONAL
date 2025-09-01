@@ -85,9 +85,9 @@ const initDatabase = async () => {
       );
     `);
 
-    // Intentar agregar la columna documentNumber si no existe
+    // Intentar agregar la columna documentNumber si no existe (sin UNIQUE)
     try {
-      await db.execAsync(`ALTER TABLE users ADD COLUMN documentNumber TEXT UNIQUE;`);
+      await db.execAsync(`ALTER TABLE users ADD COLUMN documentNumber TEXT;`);
       console.log("🆕 Columna documentNumber agregada.");
     } catch (err) {
       // Si ya existe, ignora el error
