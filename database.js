@@ -1,12 +1,9 @@
 import * as SQLite from 'expo-sqlite';
 import * as Crypto from 'expo-crypto';
 
-// Abrimos la base de datos usando la nueva API síncrona, que es ideal para inicializar.
 const db = SQLite.openDatabaseSync("users.db");
 
-// --- Funciones del Módulo ---
-
-// Añadir usuario con número de documento opcional (ajusta si lo usas)
+// Añadir usuario con número de documento opcional
 const addUser = async (name, email, password, role, documentNumber = null) => {
   const hashedPassword = await Crypto.digestStringAsync(
     Crypto.CryptoDigestAlgorithm.SHA256,
@@ -27,31 +24,54 @@ const addUser = async (name, email, password, role, documentNumber = null) => {
     console.log(`✅ Usuario agregado: ${name} (${role})`);
     return true;
   } catch (error) {
+    // Si el error es por usuario existente, ignóralo
+    if (error.message && error.message.includes('UNIQUE constraint failed')) {
+      return false;
+    }
     console.error("❌ Error al insertar usuario:", error);
     throw error;
   }
 };
 
-// Función para crear usuarios predeterminados si la base de datos está vacía.
-const seedDefaultUsers = async () => {
-  try {
-    const users = await db.getAllAsync("SELECT * FROM users");
-    if (users.length === 0) {
-      console.log("🌱 No hay usuarios, creando usuarios predeterminados...");
-      await addUser("Admin", "admin@institucion.com", "admin123", "docente");
-      await addUser("Secretaria", "secretaria@institucion.com", "secretaria123", "secretaria");
-      await addUser("Rector", "rector@institucion.com", "rector123", "rector");
-      await addUser("Coordinador", "coordinador@institucion.com", "coordinador123", "coordinador");
-      console.log("👤 Usuarios predeterminados creados con éxito.");
-    } else {
-      console.log("👍 La base de datos ya tiene usuarios.");
+// Crea los usuarios principales si no existen
+const seedMainUsers = async () => {
+  const mainUsers = [
+    {
+      name: "Secretaria",
+      email: "secretaria@institucion.com",
+      password: "secretaria123",
+      role: "secretaria",
+      documentNumber: "10000001"
+    },
+    {
+      name: "Rector",
+      email: "rector@institucion.com",
+      password: "rector123",
+      role: "rector",
+      documentNumber: "10000002"
+    },
+    {
+      name: "Coordinador",
+      email: "coordinador@institucion.com",
+      password: "coordinador123",
+      role: "coordinador",
+      documentNumber: "10000003"
     }
-  } catch (error) {
-    console.error("❌ Error al intentar crear los usuarios predeterminados:", error);
+  ];
+
+  for (const user of mainUsers) {
+    // Verifica si el usuario ya existe por email
+    const exists = await db.getFirstAsync(
+      "SELECT * FROM users WHERE email = ?",
+      [user.email]
+    );
+    if (!exists) {
+      await addUser(user.name, user.email, user.password, user.role, user.documentNumber);
+    }
   }
 };
 
-// Inicializa la base de datos y crea los usuarios predeterminados si es necesario.
+// Inicializa la base de datos y crea la tabla si no existe
 const initDatabase = async () => {
   try {
     await db.execAsync(`
@@ -66,7 +86,7 @@ const initDatabase = async () => {
       );
     `);
     console.log("📦 Tabla 'users' lista.");
-    await seedDefaultUsers();
+    await seedMainUsers(); // Crea los usuarios principales si no existen
   } catch (error) {
     console.error("❌ Error creando la tabla 'users':", error);
     throw error;
@@ -91,7 +111,7 @@ const getUserByLogin = async (email, password) => {
   }
 };
 
-// Obtener todos los usuarios (útil para debuggear)
+// Obtener todos los usuarios
 const getUsers = async () => {
   try {
     const users = await db.getAllAsync("SELECT * FROM users");
@@ -137,7 +157,6 @@ const updateUser = async (id, name, email, role, documentNumber = null) => {
 };
 
 // --- Exportación del Servicio ---
-
 export const dbService = {
   initDatabase,
   addUser,
