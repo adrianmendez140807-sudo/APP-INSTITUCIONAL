@@ -25,7 +25,6 @@ import GenerarReportes from '../screens/Secretaria/Reportes/GenerarReportes';
 import ReportesAsistencias from '../screens/Secretaria/Reportes/ReportesAsistencias';
 import DocumentosOficiales from '../screens/Secretaria/Documentos/DocumentosOficiales';
 import StudentHome from '../screens/Estudiante/StudentHome';
-import BaseDatosDocentes from '../screens/Secretaria/Docentes1/DataBaseTeacher';
 import BaseDatosDocentes1 from '../screens/Secretaria/Docentes1/DataBaseTeacher';
 
 const Stack = createNativeStackNavigator();
