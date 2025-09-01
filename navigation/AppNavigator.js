@@ -1,4 +1,3 @@
-// navigation/AppNavigator.js
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -31,9 +30,9 @@ const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Loading" screenOptions={{ headerShown: true }}>
+    <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: true }}>
       <Stack.Screen name="Loading" component={LoadingScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Iniciar sesión' }} />
+      <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Iniciar sesión', headerShown: false }} />
       <Stack.Screen name="AdminHome" component={AdminHomeScreen} options={{ title: 'Administrador' }} />
       <Stack.Screen name="SecretariaHome" component={SecretariaHome} options={{ title: 'Secretaría' }} />
       <Stack.Screen name="CoordinadorHome" component={CoordinadorHome} options={{ title: 'Coordinación' }} />

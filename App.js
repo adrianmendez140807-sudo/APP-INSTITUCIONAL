@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigator from './navigation/AppNavigator';
-import { initDatabase } from './database';
+import dbService from './database'; // <-- Importa el objeto
 import LoadingScreen from './screens/Otros/LoadingScreen';
 
 export default function App() {
@@ -10,7 +10,7 @@ export default function App() {
   useEffect(() => {
     async function setup() {
       try {
-        await initDatabase();
+        await dbService.initDatabase(); // <-- Usa la función desde el objeto
         setLoading(false);
         console.log("✅ Base de datos lista");
       } catch (error) {
