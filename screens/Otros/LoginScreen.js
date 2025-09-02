@@ -159,7 +159,7 @@ export default function LoginScreen({ navigation }) {
 
     const eyeTransformX = eyeAnimation.interpolate({
       inputRange: [-1, 1],
-      outputRange: [-10, 10],
+      outputRange: [-12, 12],
     });
 
     const eyeTransformY = eyeAnimation.interpolate({
@@ -174,6 +174,7 @@ export default function LoginScreen({ navigation }) {
     const tasselSwing = useRef(new Animated.Value(0)).current;
     const earWiggle = useRef(new Animated.Value(0)).current;
     const headFollowAnimation = useRef(new Animated.Value(0)).current;
+    const peekTranslateY = useRef(new Animated.Value(0)).current;
 
     // Respiración sutil constante
     useEffect(() => {
@@ -250,8 +251,7 @@ export default function LoginScreen({ navigation }) {
     // Animación cuando está nervioso (al escribir contraseña)
     useEffect(() => {
       if (isPasswordFocused) {
-        // Movimiento nervioso más intenso
-        Animated.loop(
+        const nervousAnim = Animated.loop(
           Animated.sequence([
             Animated.timing(nervousAnimation, {
               toValue: 1,
@@ -279,10 +279,9 @@ export default function LoginScreen({ navigation }) {
               useNativeDriver: true,
             }),
           ])
-        ).start();
+        );
         
-        // Mover orejas más intensamente
-        Animated.loop(
+        const earWiggleAnim = Animated.loop(
           Animated.sequence([
             Animated.timing(earWiggle, {
               toValue: 1,
@@ -300,14 +299,58 @@ export default function LoginScreen({ navigation }) {
               useNativeDriver: true,
             }),
           ])
-        ).start();
-      } else {
-        nervousAnimation.stopAnimation();
-        nervousAnimation.setValue(0);
-        earWiggle.stopAnimation();
-        earWiggle.setValue(0);
+        );
+
+        nervousAnim.start();
+        earWiggleAnim.start();
+
+        return () => {
+          nervousAnim.stop();
+          nervousAnimation.setValue(0);
+          earWiggleAnim.stop();
+          earWiggle.setValue(0);
+        };
       }
     }, [isPasswordFocused]);
+
+    // Animación de la pata para espiar cuando se muestra la contraseña
+    useEffect(() => {
+      let peekAnimation;
+      if (showPassword) {
+        // La pata se levanta para "espiar"
+        peekAnimation = Animated.loop(
+          Animated.sequence([
+            Animated.delay(500), // Un pequeño delay antes de espiar
+            Animated.timing(peekTranslateY, {
+              toValue: -25, // Levanta la pata un poco más
+              duration: 250,
+              useNativeDriver: true,
+            }),
+            Animated.delay(1500), // Mantiene la pata arriba para "ver"
+            Animated.timing(peekTranslateY, {
+              toValue: 0,
+              duration: 300,
+              useNativeDriver: true,
+            }),
+            Animated.delay(3000), // Espera antes de repetir
+          ])
+        );
+        peekAnimation.start();
+      }
+
+      // Función de limpieza
+      return () => {
+        if (peekAnimation) {
+          peekAnimation.stop();
+        }
+        // Asegurarse de que la pata vuelva a su sitio al ocultar la contraseña
+        Animated.timing(peekTranslateY, {
+          toValue: 0,
+          duration: 200,
+          useNativeDriver: true,
+        }).start();
+      };
+    }, [showPassword]);
 
     // Animación de balanceo de la borla más realista
     useEffect(() => {
@@ -689,6 +732,7 @@ export default function LoginScreen({ navigation }) {
                         outputRange: [1, 1.05],
                       }),
                     },
+                    { translateY: peekTranslateY },
                   ],
                 },
               ]}
