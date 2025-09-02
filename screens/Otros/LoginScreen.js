@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  TouchableOpacity, 
-  Alert, 
-  StyleSheet, 
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+    StyleSheet,
   Animated,
   Dimensions,
   KeyboardAvoidingView,
@@ -105,6 +105,15 @@ export default function LoginScreen({ navigation }) {
         useNativeDriver: true,
       }).start();
     }
+  };
+
+  const handleEmailFocus = () => {
+    Animated.timing(eyeAnimation, {
+      toValue: 0,
+      duration: 200,
+      useNativeDriver: true,
+    }).start();
+    setIsPasswordFocused(false);
   };
 
   const handleLogin = async () => {
@@ -350,9 +359,10 @@ export default function LoginScreen({ navigation }) {
       outputRange: [0, 4],
     });
 
+    // CORRECCIÓN: Se asegura que el valor de rotación sea una cadena
     const tasselRotation = tasselSwing.interpolate({
       inputRange: [-1, 0, 1],
-      outputRange: ['-25deg', '10deg', '35deg'],
+      outputRange: ["-25deg", "10deg", "35deg"],
     });
 
     const tasselSwingY = tasselSwing.interpolate({
@@ -365,14 +375,16 @@ export default function LoginScreen({ navigation }) {
       outputRange: [-3, 0, 3],
     });
 
+    // CORRECCIÓN: Se asegura que el valor de rotación sea una cadena
     const nervousHeadTilt = nervousAnimation.interpolate({
       inputRange: [-1, 0, 1],
-      outputRange: ['-2deg', '0deg', '2deg'],
+      outputRange: ["-2deg", "0deg", "2deg"],
     });
 
+    // CORRECCIÓN: Se asegura que el valor de rotación sea una cadena
     const earRotation = earWiggle.interpolate({
       inputRange: [-1, 0, 1],
-      outputRange: ['-8deg', '0deg', '8deg'],
+      outputRange: ["-8deg", "0deg", "8deg"],
     });
 
     const earScale = earWiggle.interpolate({
@@ -382,10 +394,10 @@ export default function LoginScreen({ navigation }) {
 
     return (
       <View style={styles.avatarContainer}>
-        <Animated.View 
+        <Animated.View
           style={[
             styles.bearHead,
-            { 
+            {
               transform: [
                 { translateY: Animated.add(headTransform, idleHeadMovement) },
                 { translateX: Animated.add(nervousShake, headFollowMovement) },
@@ -413,16 +425,15 @@ export default function LoginScreen({ navigation }) {
             <View style={styles.birreteButton}>
               <View style={styles.birreteButtonHighlight} />
             </View>
-            {/* Borla con cuerda */}
-            <Animated.View 
+            <Animated.View
               style={[
                 styles.birreteTassel,
                 { 
                   transform: [
                     { rotate: tasselRotation },
-                    { translateY: tasselSwingY }
-                  ] 
-                }
+                    { translateY: tasselSwingY },
+                  ],
+                },
               ]}
             >
               <View style={styles.tasselCord} />
@@ -433,45 +444,50 @@ export default function LoginScreen({ navigation }) {
               </View>
             </Animated.View>
           </View>
-          
+
           {/* Orejas de oso más realistas */}
           <View style={styles.earsContainer}>
-            <Animated.View style={[
-              styles.ear,
-              { 
-                transform: [
-                  { rotate: earRotation },
-                  { scale: earScale }
-                ] 
-              }
-            ]}>
+            <Animated.View
+              style={[
+                styles.ear,
+                {
+                  transform: [
+                    { rotate: earRotation },
+                    { scale: earScale },
+                  ],
+                },
+              ]}
+            >
               <View style={styles.earOuter} />
               <View style={styles.innerEar} />
               <View style={styles.earHighlight} />
               <View style={styles.earShadow} />
             </Animated.View>
-            <Animated.View style={[
-              styles.ear,
-              { 
-                transform: [
-                  { rotate: Animated.multiply(earRotation, -1) },
-                  { scale: earScale }
-                ] 
-              }
-            ]}>
+            <Animated.View
+              style={[
+                styles.ear,
+                {
+                  transform: [
+                    { rotate: Animated.multiply(earRotation, -1) },
+                    { scale: earScale },
+                  ],
+                },
+              ]}
+            >
               <View style={styles.earOuter} />
               <View style={styles.innerEar} />
               <View style={styles.earHighlight} />
               <View style={styles.earShadow} />
             </Animated.View>
           </View>
-          
+
           {/* Cabeza de oso ultra-realista */}
-          <Animated.View style={[
-            styles.face,
-            { transform: [{ scale: breathingScale }] }
-          ]}>
-            {/* Capas de pelaje */}
+          <Animated.View
+            style={[
+              styles.face,
+              { transform: [{ scale: breathingScale }] },
+            ]}
+          >
             <View style={styles.furLayer1} />
             <View style={styles.furLayer2} />
             <View style={styles.furLayer3} />
@@ -479,53 +495,56 @@ export default function LoginScreen({ navigation }) {
             {/* Áreas de luz y sombra */}
             <View style={styles.faceLightArea} />
             <View style={styles.faceShadowArea} />
-            
-            {/* Mejillas que reaccionan */}
             <View style={styles.cheeksContainer}>
-              <Animated.View 
+              <Animated.View
                 style={[
                   styles.cheek,
-                  { 
+                  {
                     opacity: isPasswordFocused ? 0.9 : 0.4,
-                    backgroundColor: isPasswordFocused ? '#FF4757' : '#8B4513',
-                    transform: [{ scale: isPasswordFocused ? 1.1 : 1 }]
-                  }
-                ]} 
+                    backgroundColor: isPasswordFocused
+                      ? "#FF4757"
+                      : "#8B4513",
+                    transform: [{ scale: isPasswordFocused ? 1.1 : 1 }],
+                  },
+                ]}
               />
-              <Animated.View 
+              <Animated.View
                 style={[
                   styles.cheek,
-                  { 
+                  {
                     opacity: isPasswordFocused ? 0.9 : 0.4,
-                    backgroundColor: isPasswordFocused ? '#FF4757' : '#8B4513',
-                    transform: [{ scale: isPasswordFocused ? 1.1 : 1 }]
-                  }
-                ]} 
+                    backgroundColor: isPasswordFocused
+                      ? "#FF4757"
+                      : "#8B4513",
+                    transform: [{ scale: isPasswordFocused ? 1.1 : 1 }],
+                  },
+                ]}
               />
             </View>
-            
-            {/* Sistema ocular complejo */}
+
             <View style={styles.eyesContainer}>
-              <Animated.View 
+              <Animated.View
                 style={[
                   styles.eyeSocket,
-                  { 
+                  {
                     opacity: blinkAnimation,
                     transform: [
                       { translateX: eyeTransformX },
-                      { translateY: eyeTransformY }
-                    ]
-                  }
+                      { translateY: eyeTransformY },
+                    ],
+                  },
                 ]}
               >
                 <View style={styles.eyeLid} />
-                <View style={[
-                  styles.eye,
-                  { 
-                    width: isPasswordFocused ? 14 : 22,
-                    height: isPasswordFocused ? 14 : 22
-                  }
-                ]}>
+                <View
+                  style={[
+                    styles.eye,
+                    {
+                      width: isPasswordFocused ? 14 : 22,
+                      height: isPasswordFocused ? 14 : 22,
+                    },
+                  ]}
+                >
                   <View style={styles.sclera} />
                   <View style={styles.iris} />
                   <View style={styles.pupil} />
@@ -535,26 +554,28 @@ export default function LoginScreen({ navigation }) {
                 <View style={styles.eyeLashes} />
                 {isPasswordFocused && <View style={styles.worriedBrow} />}
               </Animated.View>
-              <Animated.View 
+              <Animated.View
                 style={[
                   styles.eyeSocket,
-                  { 
+                  {
                     opacity: blinkAnimation,
                     transform: [
                       { translateX: eyeTransformX },
-                      { translateY: eyeTransformY }
-                    ]
-                  }
+                      { translateY: eyeTransformY },
+                    ],
+                  },
                 ]}
               >
                 <View style={styles.eyeLid} />
-                <View style={[
-                  styles.eye,
-                  { 
-                    width: isPasswordFocused ? 14 : 22,
-                    height: isPasswordFocused ? 14 : 22
-                  }
-                ]}>
+                <View
+                  style={[
+                    styles.eye,
+                    {
+                      width: isPasswordFocused ? 14 : 22,
+                      height: isPasswordFocused ? 14 : 22,
+                    },
+                  ]}
+                >
                   <View style={styles.sclera} />
                   <View style={styles.iris} />
                   <View style={styles.pupil} />
@@ -565,8 +586,7 @@ export default function LoginScreen({ navigation }) {
                 {isPasswordFocused && <View style={styles.worriedBrow} />}
               </Animated.View>
             </View>
-            
-            {/* Hocico de oso realista */}
+
             <View style={styles.snoutContainer}>
               <View style={styles.snout}>
                 <View style={styles.snoutBase} />
@@ -598,52 +618,56 @@ export default function LoginScreen({ navigation }) {
             {/* Efectos cuando está nervioso */}
             {isPasswordFocused && (
               <>
-                <Animated.View style={[
-                  styles.sweatDrop, 
-                  { 
-                    top: 25, 
-                    left: 25,
-                    opacity: nervousAnimation.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0.6, 1],
-                    })
-                  }
-                ]} />
-                <Animated.View style={[
-                  styles.sweatDrop, 
-                  { 
-                    top: 20, 
-                    right: 30,
-                    opacity: nervousAnimation.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0.8, 1],
-                    })
-                  }
-                ]} />
+                <Animated.View
+                  style={[
+                    styles.sweatDrop,
+                    {
+                      top: 25,
+                      left: 25,
+                      opacity: nervousAnimation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0.6, 1],
+                      }),
+                    },
+                  ]}
+                />
+                <Animated.View
+                  style={[
+                    styles.sweatDrop,
+                    {
+                      top: 20,
+                      right: 30,
+                      opacity: nervousAnimation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0.8, 1],
+                      }),
+                    },
+                  ]}
+                />
                 <View style={styles.nervousLines} />
               </>
             )}
           </Animated.View>
-          
-          {/* Patas de oso detalladas */}
-          <Animated.View 
-            style={[
-              styles.paws,
-              { opacity: handsOpacity }
-            ]}
+
+          <Animated.View
+            style={[styles.paws, { opacity: handsOpacity }]}
           >
-            <Animated.View style={[
-              styles.paw,
-              { 
-                transform: [
-                  { rotate: '-8deg' },
-                  { scale: nervousAnimation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [1, 1.05],
-                  })}
-                ] 
-              }
-            ]}>
+            <Animated.View
+              style={[
+                styles.paw,
+                {
+                  transform: [
+                    { rotate: "-8deg" },
+                    {
+                      scale: nervousAnimation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 1.05],
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            >
               <View style={styles.pawBack} />
               <View style={styles.pawPad} />
               <View style={styles.pawToes}>
@@ -653,18 +677,22 @@ export default function LoginScreen({ navigation }) {
               </View>
               <View style={styles.pawShadow} />
             </Animated.View>
-            <Animated.View style={[
-              styles.paw,
-              { 
-                transform: [
-                  { rotate: '8deg' },
-                  { scale: nervousAnimation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [1, 1.05],
-                  })}
-                ] 
-              }
-            ]}>
+            <Animated.View
+              style={[
+                styles.paw,
+                {
+                  transform: [
+                    { rotate: "8deg" },
+                    {
+                      scale: nervousAnimation.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [1, 1.05],
+                      }),
+                    },
+                  ],
+                },
+              ]}
+            >
               <View style={styles.pawBack} />
               <View style={styles.pawPad} />
               <View style={styles.pawToes}>
@@ -681,12 +709,12 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <KeyboardAvoidingView 
+    <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <StatusBar barStyle="light-content" backgroundColor="#667eea" />
-      
+
       <View style={styles.backgroundGradient}>
         <View style={styles.topSection}>
           <BearAvatar />
@@ -696,7 +724,12 @@ export default function LoginScreen({ navigation }) {
 
         <View style={styles.formContainer}>
           <View style={styles.inputContainer}>
-            <Ionicons name="mail-outline" size={20} color="#8F9BB3" style={styles.inputIcon} />
+            <Ionicons
+              name="mail-outline"
+              size={20}
+              color="#8F9BB3"
+              style={styles.inputIcon}
+            />
             <TextInput
               style={styles.input}
               placeholder="Correo electrónico"
@@ -711,7 +744,12 @@ export default function LoginScreen({ navigation }) {
           </View>
 
           <View style={styles.inputContainer}>
-            <Ionicons name="lock-closed-outline" size={20} color="#8F9BB3" style={styles.inputIcon} />
+            <Ionicons
+              name="lock-closed-outline"
+              size={20}
+              color="#8F9BB3"
+              style={styles.inputIcon}
+            />
             <TextInput
               style={[styles.input, styles.passwordInput]}
               placeholder="Contraseña"
@@ -726,17 +764,22 @@ export default function LoginScreen({ navigation }) {
               style={styles.eyeButton}
               onPress={() => setShowPassword(!showPassword)}
             >
-              <Ionicons 
-                name={showPassword ? "eye-outline" : "eye-off-outline"} 
-                size={20} 
-                color="#8F9BB3" 
+              <Ionicons
+                name={showPassword ? "eye-outline" : "eye-off-outline"}
+                size={20}
+                color="#8F9BB3"
               />
             </TouchableOpacity>
           </View>
 
           <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
             <Text style={styles.loginButtonText}>Ingresar</Text>
-            <Ionicons name="arrow-forward" size={20} color="#FFFFFF" style={styles.buttonIcon} />
+            <Ionicons
+              name="arrow-forward"
+              size={20}
+              color="#FFFFFF"
+              style={styles.buttonIcon}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -750,34 +793,33 @@ const styles = StyleSheet.create({
   },
   backgroundGradient: {
     flex: 1,
-    backgroundColor: '#667eea',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    backgroundColor: "#667eea",
   },
   topSection: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingTop: 60,
   },
   avatarContainer: {
     marginBottom: 30,
   },
   bearHead: {
-    position: 'relative',
-    alignItems: 'center',
+    position: "relative",
+    alignItems: "center",
   },
   birrete: {
-    position: 'absolute',
+    position: "absolute",
     top: -25,
     zIndex: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   birreteBase: {
     width: 90,
     height: 20,
-    backgroundColor: '#0a0a0a',
+    backgroundColor: "#0a0a0a",
     borderRadius: 45,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.4,
     shadowRadius: 4,
@@ -786,11 +828,11 @@ const styles = StyleSheet.create({
   birreteTop: {
     width: 85,
     height: 12,
-    backgroundColor: '#1a1a1a',
+    backgroundColor: "#1a1a1a",
     borderRadius: 42,
-    position: 'absolute',
+    position: "absolute",
     top: 4,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
@@ -799,49 +841,49 @@ const styles = StyleSheet.create({
   birreteButton: {
     width: 8,
     height: 8,
-    backgroundColor: '#333',
+    backgroundColor: "#333",
     borderRadius: 4,
-    position: 'absolute',
+    position: "absolute",
     top: 6,
   },
   birreteTassel: {
-    position: 'absolute',
+    position: "absolute",
     right: -15,
     top: 0,
-    alignItems: 'center',
+    alignItems: "center",
   },
   tasselCord: {
     width: 2,
     height: 20,
-    backgroundColor: '#FFD700',
+    backgroundColor: "#FFD700",
   },
   tasselEnd: {
     width: 12,
     height: 16,
-    backgroundColor: '#FFD700',
+    backgroundColor: "#FFD700",
     borderRadius: 6,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 2,
   },
   earsContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: -15,
-    flexDirection: 'row',
+    flexDirection: "row",
     width: 150,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     zIndex: 5,
   },
   ear: {
     width: 40,
     height: 40,
-    backgroundColor: '#654321',
+    backgroundColor: "#654321",
     borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -850,207 +892,207 @@ const styles = StyleSheet.create({
   innerEar: {
     width: 22,
     height: 22,
-    backgroundColor: '#D2691E',
+    backgroundColor: "#D2691E",
     borderRadius: 11,
   },
   earHighlight: {
-    position: 'absolute',
+    position: "absolute",
     top: 8,
     left: 8,
     width: 8,
     height: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    backgroundColor: "rgba(255, 255, 255, 0.3)",
     borderRadius: 4,
   },
   face: {
     width: 130,
     height: 130,
-    backgroundColor: '#654321',
+    backgroundColor: "#654321",
     borderRadius: 65,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.4,
     shadowRadius: 8,
     elevation: 10,
   },
   faceLightArea: {
-    position: 'absolute',
+    position: "absolute",
     top: 20,
     left: 20,
     width: 40,
     height: 40,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
     borderRadius: 20,
   },
   cheeksContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 40,
-    flexDirection: 'row',
+    flexDirection: "row",
     width: 100,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   cheek: {
     width: 25,
     height: 20,
-    backgroundColor: '#8B4513',
+    backgroundColor: "#8B4513",
     borderRadius: 12,
     opacity: 0.6,
   },
   eyesContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     width: 60,
-    position: 'absolute',
+    position: "absolute",
     top: 30,
   },
   eyeSocket: {
     width: 24,
     height: 24,
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
     borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   eye: {
     width: 20,
     height: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
     elevation: 2,
   },
   iris: {
-    position: 'absolute',
+    position: "absolute",
     width: 12,
     height: 12,
-    backgroundColor: '#8B4513',
+    backgroundColor: "#8B4513",
     borderRadius: 6,
   },
   pupil: {
     width: 6,
     height: 6,
-    backgroundColor: '#000000',
+    backgroundColor: "#000000",
     borderRadius: 3,
     zIndex: 2,
   },
   eyeReflection: {
-    position: 'absolute',
+    position: "absolute",
     top: 2,
     left: 3,
     width: 3,
     height: 3,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
     borderRadius: 1.5,
     zIndex: 3,
   },
   eyelid: {
-    position: 'absolute',
+    position: "absolute",
     top: -2,
     width: 24,
     height: 8,
-    backgroundColor: '#654321',
+    backgroundColor: "#654321",
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
   },
   snoutContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 55,
-    alignItems: 'center',
+    alignItems: "center",
   },
   snout: {
     width: 45,
     height: 35,
-    backgroundColor: '#8B4513',
+    backgroundColor: "#8B4513",
     borderRadius: 22,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
     elevation: 3,
   },
   snoutHighlight: {
-    position: 'absolute',
+    position: "absolute",
     top: 5,
     width: 20,
     height: 15,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
     borderRadius: 10,
   },
   nose: {
     width: 16,
     height: 12,
-    backgroundColor: '#000000',
+    backgroundColor: "#000000",
     borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 5,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 1,
     elevation: 1,
   },
   noseHighlight: {
-    position: 'absolute',
+    position: "absolute",
     top: 2,
     left: 3,
     width: 4,
     height: 3,
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
+    backgroundColor: "rgba(255, 255, 255, 0.4)",
     borderRadius: 2,
   },
   nostril: {
     width: 2,
     height: 4,
-    backgroundColor: '#333',
+    backgroundColor: "#333",
     borderRadius: 1,
     margin: 1,
   },
   mouthArea: {
     marginTop: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   mouthLine: {
     width: 2,
     height: 8,
-    backgroundColor: '#000',
+    backgroundColor: "#000",
   },
   lipCurve: {
-    position: 'absolute',
+    position: "absolute",
     top: 8,
     width: 8,
     height: 4,
     borderWidth: 1,
-    borderColor: '#000',
+    borderColor: "#000",
     borderTopWidth: 0,
     borderBottomLeftRadius: 8,
     borderBottomRightRadius: 8,
   },
   paws: {
-    position: 'absolute',
+    position: "absolute",
     top: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     width: 100,
   },
   paw: {
     width: 35,
     height: 35,
-    backgroundColor: '#654321',
+    backgroundColor: "#654321",
     borderRadius: 17,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
@@ -1059,23 +1101,23 @@ const styles = StyleSheet.create({
   pawPad: {
     width: 18,
     height: 15,
-    backgroundColor: '#2F1B14',
+    backgroundColor: "#2F1B14",
     borderRadius: 9,
     marginBottom: 3,
   },
   pawToes: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     width: 20,
   },
   worriedBrow: {
-    position: 'absolute',
+    position: "absolute",
     top: -8,
     width: 15,
     height: 3,
-    backgroundColor: '#654321',
+    backgroundColor: "#654321",
     borderRadius: 2,
-    transform: [{ rotate: '15deg' }],
+    transform: [{ rotate: "15deg" }],
   },
   worriedMouth: {
     width: 12,
@@ -1083,18 +1125,18 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     borderWidth: 2,
-    borderColor: '#000',
+    borderColor: "#000",
     borderBottomWidth: 0,
     marginTop: 5,
   },
   sweatDrop: {
-    position: 'absolute',
+    position: "absolute",
     width: 6,
     height: 8,
-    backgroundColor: '#87CEEB',
+    backgroundColor: "#87CEEB",
     borderRadius: 3,
     opacity: 0.8,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
     shadowRadius: 1,
@@ -1102,27 +1144,27 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    textAlign: "center",
     marginBottom: 8,
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
+    textShadowColor: "rgba(0, 0, 0, 0.3)",
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
   },
   subtitle: {
     fontSize: 16,
-    color: 'rgba(255, 255, 255, 0.8)',
-    textAlign: 'center',
+    color: "rgba(255, 255, 255, 0.8)",
+    textAlign: "center",
   },
   formContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 30,
     paddingTop: 40,
     paddingBottom: 40,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: -5,
@@ -1132,14 +1174,14 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F7F9FC',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F7F9FC",
     borderRadius: 15,
     marginBottom: 20,
     paddingHorizontal: 15,
     borderWidth: 1,
-    borderColor: '#E4E9F2',
+    borderColor: "#E4E9F2",
   },
   inputIcon: {
     marginRight: 10,
@@ -1148,48 +1190,38 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 50,
     fontSize: 16,
-    color: '#2E3A59',
+    color: "#2E3A59",
   },
   passwordInput: {
     paddingRight: 45,
   },
   eyeButton: {
-    position: 'absolute',
+    position: "absolute",
     right: 15,
     padding: 5,
   },
   loginButton: {
-    flexDirection: 'row',
-    backgroundColor: '#667eea',
+    flexDirection: "row",
+    backgroundColor: "#667eea",
     paddingVertical: 15,
+    paddingHorizontal: 25,
     borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 10,
-    shadowColor: '#667eea',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
+    shadowRadius: 5,
+    elevation: 6,
+    marginTop: 20,
   },
   loginButtonText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "bold",
     marginRight: 10,
   },
   buttonIcon: {
     marginLeft: 5,
   },
 });
-  const handleEmailFocus = () => {
-    setIsPasswordFocused(false); // Asegura que el avatar no esté en modo "nervioso"
-    Animated.timing(eyeAnimation, {
-      toValue: 0,
-      duration: 200,
-      useNativeDriver: true,
-    }).start();
-  };
