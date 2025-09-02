@@ -136,7 +136,7 @@ export default function LoginScreen({ navigation }) {
           navigation.navigate('SecretariaHome');
           break;
         case 'admin':
-          navigation.navigate('AdminHome');
+          navigation.navigate('AdminDashboard');
           break;
         default:
           Alert.alert('Error', 'Rol de usuario no reconocido');
@@ -158,8 +158,8 @@ export default function LoginScreen({ navigation }) {
     });
 
     const eyeTransformX = eyeAnimation.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, 8],
+      inputRange: [-1, 1],
+      outputRange: [-10, 10],
     });
 
     const eyeTransformY = eyeAnimation.interpolate({
@@ -468,7 +468,7 @@ export default function LoginScreen({ navigation }) {
                 styles.ear,
                 {
                   transform: [
-                    { rotate: Animated.multiply(earRotation, -1) },
+                    { rotate: earRotation },
                     { scale: earScale },
                   ],
                 },
@@ -993,7 +993,7 @@ const styles = StyleSheet.create({
     borderRadius: 1.5,
     zIndex: 3,
   },
-  eyelid: {
+    eyeLid: {
     position: "absolute",
     top: -2,
     width: 24,
