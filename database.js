@@ -1,114 +1,91 @@
 import * as SQLite from 'expo-sqlite';
 import * as Crypto from 'expo-crypto';
 
-const db = SQLite.openDatabaseSync("users.db");
+// Usamos la nueva API síncrona de expo-sqlite para simplificar
+const db = SQLite.openDatabaseSync("app.db");
 
-// Añadir usuario con número de documento opcional
-const addUser = async (name, email, password, role, documentNumber = null) => {
+// --- FUNCIÓN PARA INICIALIZAR LA BASE DE DATOS ---
+const initDatabase = async () => {
+  try {
+    // Se eliminó la lógica de ALTER TABLE. Ahora se crea la tabla completa desde el inicio.
+    // Esto es más robusto y evita errores de migración en el desarrollo.
+    await db.execAsync(`
+      PRAGMA journal_mode = WAL;
+      CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        email TEXT UNIQUE,
+        password TEXT,
+        role TEXT,
+        documentNumber TEXT UNIQUE,
+        telefono TEXT,
+        direccion TEXT,
+        fechaNacimiento TEXT,
+        -- Campos de Docente
+        fechaIngreso TEXT,
+        tituloAcademico TEXT,
+        materias TEXT,
+        grados TEXT,
+        directorDeGrupo TEXT,
+        -- Campos de Estudiante
+        nombreAcudiente TEXT,
+        telefonoAcudiente TEXT,
+        emailAcudiente TEXT,
+        grado TEXT,
+        jornada TEXT,
+        estado TEXT
+      );
+    `);
+    console.log("✅ Tabla 'users' creada o ya existente con el esquema completo.");
+    
+    // Llama a la función para sembrar los usuarios principales si no existen.
+    await seedMainUsers();
+  } catch (error) {
+    console.error("❌ Error fatal inicializando la base de datos:", error);
+    throw error;
+  }
+};
+
+// --- FUNCIÓN PARA AÑADIR USUARIOS (Docentes, Estudiantes, etc.) ---
+const addUser = async (name, email, password, role, documentNumber) => {
   const hashedPassword = await Crypto.digestStringAsync(
     Crypto.CryptoDigestAlgorithm.SHA256,
     password
   );
   try {
-    if (documentNumber) {
-      await db.runAsync(
-        "INSERT INTO users (name, email, password, role, documentNumber) VALUES (?, ?, ?, ?, ?)",
-        [name, email, hashedPassword, role, documentNumber]
-      );
-    } else {
-      await db.runAsync(
-        "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
-        [name, email, hashedPassword, role]
-      );
-    }
-    console.log(`✅ Usuario agregado: ${name} (${role})`);
-    return true;
+    const result = await db.runAsync(
+      'INSERT INTO users (name, email, password, role, documentNumber) VALUES (?, ?, ?, ?, ?)',
+      [name, email, hashedPassword, role, documentNumber]
+    );
+    console.log(`✅ Usuario agregado: ${name} (${role}) con ID: ${result.lastInsertRowId}`);
+    return result.lastInsertRowId;
   } catch (error) {
-    // Si el error es por usuario existente, ignóralo
     if (error.message && error.message.includes('UNIQUE constraint failed')) {
-      return false;
+      console.warn(`⚠️ Intento de agregar usuario duplicado: ${email}`);
+      return null;
     }
     console.error("❌ Error al insertar usuario:", error);
     throw error;
   }
 };
 
-// Crea los usuarios principales si no existen
+// --- FUNCIÓN PARA CREAR USUARIOS PRINCIPALES (Solo la primera vez) ---
 const seedMainUsers = async () => {
   const mainUsers = [
-    {
-      name: "Secretaria",
-      email: "secretaria@institucion.com",
-      password: "secretaria123",
-      role: "secretaria",
-      documentNumber: "10000001"
-    },
-    {
-      name: "Rector",
-      email: "rector@institucion.com",
-      password: "rector123",
-      role: "rector",
-      documentNumber: "10000002"
-    },
-    {
-      name: "Coordinador",
-      email: "coordinador@institucion.com",
-      password: "coordinador123",
-      role: "coordinador",
-      documentNumber: "10000003"
-    }
+    { name: "Secretaria", email: "secretaria@institucion.com", password: "secretaria123", role: "secretaria", documentNumber: "10000001" },
+    { name: "Rector", email: "rector@institucion.com", password: "rector123", role: "rector", documentNumber: "10000002" },
+    { name: "Coordinador", email: "coordinador@institucion.com", password: "coordinador123", role: "coordinador", documentNumber: "10000003" }
   ];
 
   for (const user of mainUsers) {
-    // Verifica si el usuario ya existe por email
-    const exists = await db.getFirstAsync(
-      "SELECT * FROM users WHERE email = ?",
-      [user.email]
-    );
+    const exists = await db.getFirstAsync("SELECT id FROM users WHERE email = ?", [user.email]);
     if (!exists) {
       await addUser(user.name, user.email, user.password, user.role, user.documentNumber);
     }
   }
 };
 
-// Inicializa la base de datos y realiza migración si es necesario
-const initDatabase = async () => {
-  try {
-    await db.execAsync(`
-      PRAGMA journal_mode = WAL;
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        email TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL,
-        role TEXT NOT NULL CHECK(role IN ('docente','estudiante','secretaria','rector','coordinador'))
-      );
-    `);
-
-    // Intentar agregar la columna documentNumber si no existe (sin UNIQUE)
-    try {
-      await db.execAsync(`ALTER TABLE users ADD COLUMN documentNumber TEXT;`);
-      console.log("🆕 Columna documentNumber agregada.");
-    } catch (err) {
-      // Si ya existe, ignora el error
-      if (err.message && err.message.includes('duplicate column name')) {
-        console.log("ℹ️ La columna documentNumber ya existe.");
-      } else if (err.message && err.message.includes('no such table')) {
-        // La tabla no existe, ignora
-      } else {
-        throw err;
-      }
-    }
-
-    console.log("📦 Tabla 'users' lista.");
-    await seedMainUsers(); // Crea los usuarios principales si no existen
-  } catch (error) {
-    console.error("❌ Error creando la tabla 'users':", error);
-    throw error;
-  }
-};
-
-// Obtener usuario por login
+// --- FUNCIÓN PARA VERIFICAR LOGIN ---
 const getUserByLogin = async (email, password) => {
   const hashedPassword = await Crypto.digestStringAsync(
     Crypto.CryptoDigestAlgorithm.SHA256,
@@ -126,7 +103,7 @@ const getUserByLogin = async (email, password) => {
   }
 };
 
-// Obtener todos los usuarios
+// --- FUNCIÓN PARA OBTENER TODOS LOS USUARIOS ---
 const getUsers = async () => {
   try {
     const users = await db.getAllAsync("SELECT * FROM users");
@@ -137,11 +114,11 @@ const getUsers = async () => {
   }
 };
 
-// Eliminar un usuario por su ID
+// --- FUNCIÓN PARA ELIMINAR UN USUARIO ---
 const deleteUser = async (id) => {
   try {
     await db.runAsync("DELETE FROM users WHERE id = ?", [id]);
-    console.log(`🗑️ Usuario eliminado: ${id}`);
+    console.log(`🗑️ Usuario eliminado con ID: ${id}`);
     return true;
   } catch (error) {
     console.error("❌ Error al eliminar usuario:", error);
@@ -149,21 +126,43 @@ const deleteUser = async (id) => {
   }
 };
 
-// Actualizar usuario (excepto contraseña)
-const updateUser = async (id, name, email, role, documentNumber = null) => {
+// --- FUNCIÓN PARA ACTUALIZAR USUARIO (CORREGIDA) ---
+// Acepta un solo objeto 'user' y maneja campos opcionales.
+const updateUser = async (user) => {
   try {
-    if (documentNumber) {
-      await db.runAsync(
-        "UPDATE users SET name = ?, email = ?, role = ?, documentNumber = ? WHERE id = ?",
-        [name, email, role, documentNumber, id]
-      );
-    } else {
-      await db.runAsync(
-        "UPDATE users SET name = ?, email = ?, role = ? WHERE id = ?",
-        [name, email, role, id]
-      );
-    }
-    console.log(`✏️ Usuario actualizado: ${id}`);
+    await db.runAsync(
+      `UPDATE users SET 
+        name = ?, email = ?, documentNumber = ?, telefono = ?, 
+        direccion = ?, fechaNacimiento = ?, 
+        fechaIngreso = ?, tituloAcademico = ?, materias = ?, 
+        grados = ?, directorDeGrupo = ?,
+        nombreAcudiente = ?, telefonoAcudiente = ?, emailAcudiente = ?,
+        grado = ?, jornada = ?, estado = ?
+       WHERE id = ?;`,
+      [
+        // El operador '??' asegura que si un valor es undefined, se guarde 'null'.
+        // Esto evita el error y permite guardar formularios incompletos.
+        user.name ?? null,
+        user.email ?? null,
+        user.documentNumber ?? null,
+        user.telefono ?? null,
+        user.direccion ?? null,
+        user.fechaNacimiento ?? null,
+        user.fechaIngreso ?? null,
+        user.tituloAcademico ?? null,
+        user.materias ?? null,
+        user.grados ?? null,
+        user.directorDeGrupo ?? null,
+        user.nombreAcudiente ?? null,
+        user.telefonoAcudiente ?? null,
+        user.emailAcudiente ?? null,
+        user.grado ?? null,
+        user.jornada ?? null,
+        user.estado ?? null,
+        user.id
+      ]
+    );
+    console.log(`✏️ Usuario actualizado con ID: ${user.id}`);
     return true;
   } catch (error) {
     console.error("❌ Error al actualizar usuario:", error);
@@ -171,8 +170,8 @@ const updateUser = async (id, name, email, role, documentNumber = null) => {
   }
 };
 
-// --- Exportación del Servicio ---
-export const dbService = {
+// --- EXPORTACIÓN DEL SERVICIO ---
+const dbService = {
   initDatabase,
   addUser,
   getUserByLogin,

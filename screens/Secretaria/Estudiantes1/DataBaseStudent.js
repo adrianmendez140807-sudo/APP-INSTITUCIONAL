@@ -32,7 +32,7 @@ export default function DataBaseStudent({ route, navigation }) {
   const handleSave = async () => {
     if (!studentData) return;
     try {
-      // Usamos la misma función updateUser, ya que es genérica
+      // Usamos la misma función updateUser, que ahora está corregida
       await dbService.updateUser(studentData);
       Alert.alert('Éxito', 'Los datos del estudiante han sido actualizados.', [
         { text: 'OK', onPress: () => navigation.goBack() }

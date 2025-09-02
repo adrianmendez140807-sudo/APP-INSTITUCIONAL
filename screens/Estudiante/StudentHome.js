@@ -23,41 +23,41 @@ export default function StudentHome({ navigation }) {
 
   return (
     <LinearGradient colors={['#3056ffff', '#59ff91ff']} style={styles.container}>
-      <Text style={styles.title}>Panel de Secretaría</Text>
+      <Text style={styles.title}>Pantalla principal de estudiante</Text>
 
       <View style={styles.grid}>
         {/* Estudiantes */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('estudiantes')}>
-          <Text style={styles.cardText}>Estudiantes</Text>
+        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('docentes de estudiantes')}>
+          <Text style={styles.cardText}>Docentes</Text>
         </TouchableOpacity>
 
         {/* Docentes */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('docentes')}>
-          <Text style={styles.cardText}>Docentes</Text>
+        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('Grupos')}>
+          <Text style={styles.cardText}>Grupos</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.grid}>
         {/* Notas */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('notas')}>
-          <Text style={styles.cardText}>Gestión de Notas</Text>
+        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('Materias por docentes')}>
+          <Text style={styles.cardText}>Materias por docentes</Text>
         </TouchableOpacity>
 
         {/* Documentos */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('documentos')}>
-          <Text style={styles.cardText}>Documentos</Text>
+        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('Horario')}>
+          <Text style={styles.cardText}>Horario</Text>
         </TouchableOpacity>
       </View>
 
       <View style={styles.grid}>
         {/* Reportes */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('reportes')}>
-          <Text style={styles.cardText}>Reportes</Text>
+        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('Actividades')}>
+          <Text style={styles.cardText}>Actividades e informaciones</Text>
         </TouchableOpacity>
 
         {/* Comunicación */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('comunicacion')}>
-          <Text style={styles.cardText}>Comunicación</Text>
+        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('Notas')}>
+          <Text style={styles.cardText}>Block de notas</Text>
         </TouchableOpacity>
       </View>
 
@@ -69,77 +69,71 @@ export default function StudentHome({ navigation }) {
       </View>
 
       {/* Sub-opciones dinámicas */}
-      {expanded === 'estudiantes' && (
+      {expanded === 'docentes de estudiantes' && (
         <View style={styles.dropdown}>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('Estudiante')}>
-            <Text style={styles.dropdownText}>➕ Agregar Estudiante</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ListaEstudiantes')}>
-            <Text style={styles.dropdownText}>📋 Lista de Estudiantes</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('BaseDatosEstudiantes')}>
-            <Text style={styles.dropdownText}>🗃️ Base de Datos de Estudiantes</Text>
+            <Text style={styles.dropdownText}>Listado completo de docentes</Text>
           </TouchableOpacity>
         </View>
       )}
 
-      {expanded === 'docentes' && (
+      {expanded === 'Grupos' && (
         <View style={styles.dropdown}>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('AgregarDocente')}>
-            <Text style={styles.dropdownText}>➕ Agregar Docente</Text>
+            <Text style={styles.dropdownText}>Docente + Materia</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ListaDocentes')}>
-            <Text style={styles.dropdownText}>📋 Lista de Docentes</Text>
+            <Text style={styles.dropdownText}>Solo estudiantes</Text>
           </TouchableOpacity>
         </View>
       )}
 
-      {expanded === 'notas' && (
+      {expanded === 'Materias por docentes' && (
         <View style={styles.dropdown}>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('HabilitarNotas')}>
-            <Text style={styles.dropdownText}>✅ Habilitar Notas</Text>
+            <Text style={styles.dropdownText}>Materias por docentes</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('DeshabilitarNotas')}>
-            <Text style={styles.dropdownText}>🚫 Deshabilitar Notas</Text>
+            <Text style={styles.dropdownText}>Total de Materias</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GestionNotas')}>
-            <Text style={styles.dropdownText}>📑 Gestion de notas por usuario</Text>
+            <Text style={styles.dropdownText}>Notas</Text>
           </TouchableOpacity>
         </View>
       )}
 
-      {expanded === 'documentos' && (
+      {expanded === 'Horario' && (
         <View style={styles.dropdown}>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GestionarLibros')}>
-            <Text style={styles.dropdownText}>📚 Gestionar Libros</Text>
+            <Text style={styles.dropdownText}>📅 Horario General</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ArchivosDigitales')}>
-            <Text style={styles.dropdownText}>📑 Archivos Digitales</Text>
+            <Text style={styles.dropdownText}>📅 Cambios de horario</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('DocumentosOficiales')}>
-            <Text style={styles.dropdownText}>📂 Documentos Oficiales</Text>
+            <Text style={styles.dropdownText}>Razones</Text>
           </TouchableOpacity>
         </View>
       )}
 
-      {expanded === 'reportes' && (
+      {expanded === 'Actividades' && (
         <View style={styles.dropdown}>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GenerarReportes')}>
-            <Text style={styles.dropdownText}>📊 Generar Reportes</Text>
+            <Text style={styles.dropdownText}>📅 informaciones</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ReportesAsistencias')}>
-            <Text style={styles.dropdownText}>📅 Reporte de Asistencia</Text>
+            <Text style={styles.dropdownText}>📅 Aviso de actividades</Text>
           </TouchableOpacity>
         </View>
       )}
 
-      {expanded === 'comunicacion' && (
+      {expanded === 'Notas' && (
         <View style={styles.dropdown}>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('CircularesAvisos')}>
-            <Text style={styles.dropdownText}>📢 Circulares y Avisos</Text>
+            <Text style={styles.dropdownText}>📢 Notas importantes de clase</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MensajesEstudiantes')}>
-            <Text style={styles.dropdownText}>💬 Mensajes a Estudiantes</Text>
+            <Text style={styles.dropdownText}>💬 Talleres y tareas</Text>
           </TouchableOpacity>
         </View>
       )}

@@ -26,6 +26,19 @@ import ReportesAsistencias from '../screens/Secretaria/Reportes/ReportesAsistenc
 import DocumentosOficiales from '../screens/Secretaria/Documentos/DocumentosOficiales';
 import StudentHome from '../screens/Estudiante/StudentHome';
 import BaseDatosDocentes1 from '../screens/Secretaria/Docentes1/DataBaseTeacher';
+import HorarioGeneral from '../screens/Estudiante/Horario/HorarioGeneral';
+import CambioHorario from '../screens/Estudiante/Horario/CambioHorario';
+import Razones from '../screens/Estudiante/Horario/Razones';
+import MateriasDocentes from '../screens/Estudiante/Materias/MateriasDocentes';
+import Notas from '../screens/Estudiante/Materias/Notas';
+import TotalMaterias from '../screens/Estudiante/Materias/TotalMaterias';
+import NotasImportantes from '../screens/Estudiante/BlockNotas/NotasImportantes';
+import StudentsGroup from '../screens/Estudiante/Grupos/StudentsGroup';
+import DocenteMateria from '../screens/Estudiante/Grupos/DocenteMateria';
+import DocentList from '../screens/Estudiante/Docentes/DocentList';
+import Apuntes from '../screens/Estudiante/BlockNotas/Apuntes';
+import Informaciones from '../screens/Estudiante/ActividadesInformacion/Informaciones';
+import Avisos from '../screens/Estudiante/ActividadesInformacion/Avisos';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +55,19 @@ export default function AppNavigator() {
 
       {/*Rutas de Estudiante */}
       <Stack.Screen name="StudentHome" component={StudentHome} options={{ title: 'Estudiante' }} />
+      <Stack.Screen name="HorarioGeneral" component={HorarioGeneral} options={{ title: 'Horario General' }} />
+      <Stack.Screen name="CambioHorario" component={CambioHorario} options={{ title: 'Cambio de Horario' }} />
+      <Stack.Screen name="Razones" component={Razones} options={{ title: 'Razones' }} />
+      <Stack.Screen name="MateriasDocentes" component={MateriasDocentes} options={{ title: 'Materias por Docente' }} />
+      <Stack.Screen name="Notas" component={Notas} options={{ title: 'Notas' }} />
+      <Stack.Screen name="TotalMaterias" component={TotalMaterias} options={{ title: 'Total de Materias' }} />
+      <Stack.Screen name="NotasImportantes" component={NotasImportantes} options={{ title: 'Notas Importantes' }} />
+      <Stack.Screen name="StudentsGroup" component={StudentsGroup} options={{ title: 'Grupo de Estudiantes' }} />
+      <Stack.Screen name="DocenteMateria" component={DocenteMateria} options={{ title: 'Docente por Materia' }} />
+      <Stack.Screen name="DocentesList" component={DocentList} options={{ title: 'Lista de Docentes' }} />
+      <Stack.Screen name="Apuntes" component={Apuntes} options={{ title: 'Apuntes' }} />
+      <Stack.Screen name="Informes" component={Informaciones} options={{ title: 'Informes' }} />
+      <Stack.Screen name="Avisos" component={Avisos} options={{ title: 'Avisos' }} />
 
       {/* Rutas de secretaria */}
       <Stack.Screen name="Estudiante" component={AñadirEstudiante} options={{ title: 'Agregar Estudiante' }} />
