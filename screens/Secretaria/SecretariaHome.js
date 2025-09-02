@@ -115,7 +115,7 @@ export default function SecretariaHome({ navigation }) {
             <Text style={styles.dropdownText}>✅ Habilitar Notas</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('DeshabilitarNotas')}>
-            <Text style={styles.dropdownText}>🚫 Deshabilitar Notas</Text>
+            <Text style={styles.dropdownText}>Detalles de las notas</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GestionNotas')}>
             <Text style={styles.dropdownText}>📑 Gestion de notas por usuario</Text>

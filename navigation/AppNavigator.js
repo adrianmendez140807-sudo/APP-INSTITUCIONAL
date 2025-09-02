@@ -14,7 +14,6 @@ import AgregarDocente from '../screens/Secretaria/Docentes1/AgregarDocente';
 import ListaDocentes from '../screens/Secretaria/Docentes1/ListaDocentes';
 import ListaEstudiantes from '../screens/Secretaria/Estudiantes1/ListaEstudiantes';
 import BaseDatosEstudiantes from '../screens/Secretaria/Estudiantes1/DataBaseStudent';
-import DeshabilitarNotas from '../screens/Secretaria/GestionNotas/DeshabilitarNotas';
 import HabilitarNotas from '../screens/Secretaria/GestionNotas/HabilitarNotas';
 import GestionNotas from '../screens/Secretaria/GestionNotas/GestionNotasPU';
 import CircularesAvisos from '../screens/Secretaria/Comunicacion/CircularesAvisos';
@@ -26,19 +25,20 @@ import ReportesAsistencias from '../screens/Secretaria/Reportes/ReportesAsistenc
 import DocumentosOficiales from '../screens/Secretaria/Documentos/DocumentosOficiales';
 import StudentHome from '../screens/Estudiante/StudentHome';
 import BaseDatosDocentes1 from '../screens/Secretaria/Docentes1/DataBaseTeacher';
-import HorarioGeneral from '../screens/Estudiante/Horario/HorarioGeneral';
-import CambioHorario from '../screens/Estudiante/Horario/CambioHorario';
-import Razones from '../screens/Estudiante/Horario/Razones';
-import MateriasDocentes from '../screens/Estudiante/Materias/MateriasDocentes';
-import Notas from '../screens/Estudiante/Materias/Notas';
-import TotalMaterias from '../screens/Estudiante/Materias/TotalMaterias';
 import NotasImportantes from '../screens/Estudiante/BlockNotas/NotasImportantes';
-import StudentsGroup from '../screens/Estudiante/Grupos/StudentsGroup';
 import DocenteMateria from '../screens/Estudiante/Grupos/DocenteMateria';
 import DocentList from '../screens/Estudiante/Docentes/DocentList';
 import Apuntes from '../screens/Estudiante/BlockNotas/Apuntes';
 import Informaciones from '../screens/Estudiante/ActividadesInformacion/Informaciones';
 import Avisos from '../screens/Estudiante/ActividadesInformacion/Avisos';
+import HorarioGeneral1 from '../screens/Estudiante/Horario/HorarioGeneral';
+import CambioHorario1 from '../screens/Estudiante/Horario/CambioHorario';
+import Razones1 from '../screens/Estudiante/Horario/Razones';
+import MateriasDocentes1 from '../screens/Estudiante/Materias/MateriasDocentes';
+import Notas1 from '../screens/Estudiante/Materias/Notas';
+import TotalMaterias1 from '../screens/Estudiante/Materias/TotalMaterias';
+import StudentsGroup1 from '../screens/Estudiante/Grupos/StudentsGroup';
+import DetallesNotasEstudiante from '../screens/Secretaria/GestionNotas/DetallesNotasEstudiante';
 
 const Stack = createNativeStackNavigator();
 
@@ -55,14 +55,14 @@ export default function AppNavigator() {
 
       {/*Rutas de Estudiante */}
       <Stack.Screen name="StudentHome" component={StudentHome} options={{ title: 'Estudiante' }} />
-      <Stack.Screen name="HorarioGeneral" component={HorarioGeneral} options={{ title: 'Horario General' }} />
-      <Stack.Screen name="CambioHorario" component={CambioHorario} options={{ title: 'Cambio de Horario' }} />
-      <Stack.Screen name="Razones" component={Razones} options={{ title: 'Razones' }} />
-      <Stack.Screen name="MateriasDocentes" component={MateriasDocentes} options={{ title: 'Materias por Docente' }} />
-      <Stack.Screen name="Notas" component={Notas} options={{ title: 'Notas' }} />
-      <Stack.Screen name="TotalMaterias" component={TotalMaterias} options={{ title: 'Total de Materias' }} />
+      <Stack.Screen name="HorarioGeneral" component={HorarioGeneral1} options={{ title: 'Horario General' }} />
+      <Stack.Screen name="CambioHorario" component={CambioHorario1} options={{ title: 'Cambio de Horario' }} />
+      <Stack.Screen name="Razones" component={Razones1} options={{ title: 'Razones' }} />
+      <Stack.Screen name="MateriasDocentes" component={MateriasDocentes1} options={{ title: 'Materias por Docente' }} />
+      <Stack.Screen name="Notas" component={Notas1} options={{ title: 'Notas' }} />
+      <Stack.Screen name="TotalMaterias" component={TotalMaterias1} options={{ title: 'Total de Materias' }} />
       <Stack.Screen name="NotasImportantes" component={NotasImportantes} options={{ title: 'Notas Importantes' }} />
-      <Stack.Screen name="StudentsGroup" component={StudentsGroup} options={{ title: 'Grupo de Estudiantes' }} />
+      <Stack.Screen name="StudentsGroup" component={StudentsGroup1} options={{ title: 'Grupo de Estudiantes' }} />
       <Stack.Screen name="DocenteMateria" component={DocenteMateria} options={{ title: 'Docente por Materia' }} />
       <Stack.Screen name="DocentesList" component={DocentList} options={{ title: 'Lista de Docentes' }} />
       <Stack.Screen name="Apuntes" component={Apuntes} options={{ title: 'Apuntes' }} />
@@ -75,7 +75,6 @@ export default function AppNavigator() {
       <Stack.Screen name="ListaDocentes" component={ListaDocentes} options={{ title: 'Docentes' }} />
       <Stack.Screen name="ListaEstudiantes" component={ListaEstudiantes} options={{ title: 'Estudiantes' }} />
       <Stack.Screen name="BaseDatosEstudiantes" component={BaseDatosEstudiantes} options={{ title: 'BDEs' }} />
-      <Stack.Screen name="DeshabilitarNotas" component={DeshabilitarNotas} options={{ title: 'DN' }} />
       <Stack.Screen name="GestionNotas" component={GestionNotas} options={{ title: 'GN' }} />
       <Stack.Screen name="HabilitarNotas" component={HabilitarNotas} options={{ title: 'HN' }} />
       <Stack.Screen name="CircularesAvisos" component={CircularesAvisos} options={{ title: 'CA'}}/>
@@ -86,6 +85,7 @@ export default function AppNavigator() {
       <Stack.Screen name="GenerarReportes" component={GenerarReportes} options={{ title: 'GR'}}/>
       <Stack.Screen name="ReportesAsistencias" component={ReportesAsistencias} options={{ title: 'RA'}}/>
       <Stack.Screen name="BaseDatosDocentes" component={BaseDatosDocentes1} options={{ title: 'BaseDatosDocentes' }} />
+      <Stack.Screen name="DetallesNotasEstudiante" component={DetallesNotasEstudiante} options={{ title: 'Detalles de Notas' }} />
     </Stack.Navigator>
   );
 }

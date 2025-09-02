@@ -35,6 +35,15 @@ const initDatabase = async () => {
         jornada TEXT,
         estado TEXT
       );
+      CREATE TABLE IF NOT EXISTS notas (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        student_id INTEGER NOT NULL,
+        materia TEXT NOT NULL,
+        periodo INTEGER NOT NULL,
+        nota REAL,
+        descripcion TEXT,
+        FOREIGN KEY(student_id) REFERENCES users(id) ON DELETE CASCADE
+      );
     `);
     console.log("✅ Tabla 'users' creada o ya existente con el esquema completo.");
     
@@ -170,6 +179,47 @@ const updateUser = async (user) => {
   }
 };
 
+// --- FUNCIÓN PARA OBTENER NOTAS POR ESTUDIANTE ---
+const getNotesByStudent = async (studentId) => {
+  try {
+    const notes = await db.getAllAsync(
+      "SELECT * FROM notas WHERE student_id = ? ORDER BY periodo, materia",
+      [studentId]
+    );
+    return notes;
+  } catch (error) {
+    console.error("❌ Error al obtener las notas del estudiante:", error);
+    return [];
+  }
+};
+
+// --- FUNCIÓN PARA AÑADIR O ACTUALIZAR UNA NOTA ---
+const addOrUpdateNote = async (note) => {
+  const { id, student_id, materia, periodo, nota, descripcion } = note;
+  try {
+    if (id) {
+      // Actualizar nota existente
+      await db.runAsync(
+        'UPDATE notas SET student_id = ?, materia = ?, periodo = ?, nota = ?, descripcion = ? WHERE id = ?',
+        [student_id, materia, periodo, nota, descripcion, id]
+      );
+      console.log(`✏️ Nota actualizada con ID: ${id}`);
+      return id;
+    } else {
+      // Insertar nueva nota
+      const result = await db.runAsync(
+        'INSERT INTO notas (student_id, materia, periodo, nota, descripcion) VALUES (?, ?, ?, ?, ?)',
+        [student_id, materia, periodo, nota, descripcion]
+      );
+      console.log(`✅ Nueva nota agregada con ID: ${result.lastInsertRowId}`);
+      return result.lastInsertRowId;
+    }
+  } catch (error) {
+    console.error("❌ Error al guardar la nota:", error);
+    throw error;
+  }
+};
+
 // --- EXPORTACIÓN DEL SERVICIO ---
 const dbService = {
   initDatabase,
@@ -178,6 +228,8 @@ const dbService = {
   getUsers,
   deleteUser,
   updateUser,
+  getNotesByStudent,
+  addOrUpdateNote,
 };
 
 export default dbService;
