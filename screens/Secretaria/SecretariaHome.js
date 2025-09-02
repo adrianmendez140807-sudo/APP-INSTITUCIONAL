@@ -103,6 +103,9 @@ export default function SecretariaHome({ navigation }) {
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ListaDocentes')}>
             <Text style={styles.dropdownText}>📋 Lista de Docentes</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('BaseDatosDocentes')}>
+            <Text style={styles.dropdownText}>🗃️ Base de Datos de Docentes</Text>
+          </TouchableOpacity>
         </View>
       )}
 

@@ -18,7 +18,7 @@ export default function AgregarDocente() {
     return true;
   }
 
-  const handleAddTeacher = async () => {
+  const handleAddStudent = async () => {
     if (validateUserData(name, email, password, role, documentNumber)) {
       try {
         await dbService.addUser(name, email, password, role, documentNumber);
