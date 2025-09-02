@@ -2,33 +2,33 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import dbService from '../../../database';
 
-export default function ListaEstudiantes({ navigation }) {
-  const [students, setStudents] = useState([]);
+export default function ListaDocentes({ navigation }) {
+  const [teachers, setTeachers] = useState([]);
 
   useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchTeachers = async () => {
       const all = await dbService.getUsers();
-      // Filtra solo estudiantes
-      setStudents(all.filter(u => u.role === 'estudiante'));
+      // Filtra solo docentes
+      setTeachers(all.filter(u => u.role === 'docente'));
     };
-    fetchStudents();
+    fetchTeachers();
     // Puedes agregar un listener para actualizar la lista cuando vuelvas a esta pantalla
-    const unsubscribe = navigation.addListener('focus', fetchStudents);
+    const unsubscribe = navigation.addListener('focus', fetchTeachers);
     return unsubscribe;
   }, [navigation]);
 
-  const handleSelectStudent = (student) => {
-    navigation.navigate('BaseDatosEstudiantes', { student });
+  const handleSelectTeacher = (teacher) => {
+    navigation.navigate('BaseDatosDocentes', { teacher });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Lista de Estudiantes</Text>
+      <Text style={styles.title}>Lista de Docentes</Text>
       <FlatList
-        data={students}
+        data={teachers}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.item} onPress={() => handleSelectStudent(item)}>
+          <TouchableOpacity style={styles.item} onPress={() => handleSelectTeacher(item)}>
             <Text style={styles.name}>{item.name}</Text>
             <Text style={styles.document}>{item.documentNumber}</Text>
           </TouchableOpacity>
