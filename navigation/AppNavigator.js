@@ -48,7 +48,6 @@ export default function AppNavigator() {
       <Stack.Screen name="Loading" component={LoadingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Iniciar sesión', headerShown: false }} />
       <Stack.Screen name="AdminHome" component={AdminHomeScreen} options={{ title: 'Administrador' }} />
-      <Stack.Screen name="SecretariaHome" component={SecretariaHome} options={{ title: 'Secretaría' }} />
       <Stack.Screen name="CoordinadorHome" component={CoordinadorHome} options={{ title: 'Coordinación' }} />
       <Stack.Screen name="RectorHome" component={RectorHome} options={{ title: 'Rectoría' }} />
       <Stack.Screen name="DocenteHome" component={DocenteHome} options={{ title: 'Docente' }} />
@@ -85,6 +84,7 @@ export default function AppNavigator() {
       <Stack.Screen name="GenerarReportes" component={GenerarReportes} options={{ title: 'GR'}}/>
       <Stack.Screen name="ReportesAsistencias" component={ReportesAsistencias} options={{ title: 'RA'}}/>
       <Stack.Screen name="BaseDatosDocentes" component={BaseDatosDocentes1} options={{ title: 'BaseDatosDocentes' }} />
+      <Stack.Screen name="SecretariaHome" component={SecretariaHome} options={{ title: 'Secretaría' }} />
       <Stack.Screen name="DetallesNotasEstudiante" component={DetallesNotasEstudiante} options={{ title: 'Detalles de Notas' }} />
     </Stack.Navigator>
   );
