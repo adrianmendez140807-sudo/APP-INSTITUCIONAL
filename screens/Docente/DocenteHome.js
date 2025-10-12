@@ -15,7 +15,7 @@ export default function DocenteHome({ navigation }) {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpanded(expanded === section ? null : section);
   };
- 
+
   const logout = async () => {
     await AsyncStorage.removeItem('currentUser');
     navigation.replace('Login');
@@ -23,42 +23,31 @@ export default function DocenteHome({ navigation }) {
 
   return (
     <LinearGradient colors={['#3056ffff', '#59ff91ff']} style={styles.container}>
-      <Text style={styles.title}>Panel de Secretaría</Text>
+      <Text style={styles.title}>Bienvenido Docente</Text>
 
       <View style={styles.grid}>
+        {/* Materias */}
+        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('materias')}>
+          <Text style={styles.cardText}>Materias</Text>
+        </TouchableOpacity>
+
         {/* Estudiantes */}
         <TouchableOpacity style={styles.card} onPress={() => toggleExpand('estudiantes')}>
           <Text style={styles.cardText}>Estudiantes</Text>
         </TouchableOpacity>
-
-        {/* Docentes */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('docentes')}>
-          <Text style={styles.cardText}>Docentes</Text>
-        </TouchableOpacity>
       </View>
 
       <View style={styles.grid}>
-        {/* Notas */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('notas')}>
-          <Text style={styles.cardText}>Gestión de Notas</Text>
-        </TouchableOpacity>
-
-        {/* Documentos */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('documentos')}>
-          <Text style={styles.cardText}>Documentos</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.grid}>
-        {/* Reportes */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('reportes')}>
-          <Text style={styles.cardText}>Reportes</Text>
-        </TouchableOpacity>
-
         {/* Comunicación */}
         <TouchableOpacity style={styles.card} onPress={() => toggleExpand('comunicacion')}>
           <Text style={styles.cardText}>Comunicación</Text>
         </TouchableOpacity>
+
+        {/* Notas */}
+        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('notas')}>
+          <Text style={styles.cardText}>Notas</Text>
+        </TouchableOpacity>
+
       </View>
 
       {/* Ajustes */}
@@ -83,7 +72,7 @@ export default function DocenteHome({ navigation }) {
         </View>
       )}
 
-      {expanded === 'docentes' && (
+      {expanded === 'materias' && (
         <View style={styles.dropdown}>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('AgregarDocente')}>
             <Text style={styles.dropdownText}>➕ Agregar Docente</Text>
