@@ -60,75 +60,44 @@ export default function DocenteHome({ navigation }) {
       {/* Sub-opciones dinámicas */}
       {expanded === 'estudiantes' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('Estudiante')}>
-            <Text style={styles.dropdownText}>➕ Agregar Estudiante</Text>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ListadoDeEstudiantes')}>
+            <Text style={styles.dropdownText}>📋 Listado de Estudiantes</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ListaEstudiantes')}>
-            <Text style={styles.dropdownText}>📋 Lista de Estudiantes</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('BaseDatosEstudiantes')}>
-            <Text style={styles.dropdownText}>🗃️ Base de Datos de Estudiantes</Text>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('AnotacionesYNotas')}>
+            <Text style={styles.dropdownText}>🗃️ Anotaciones y Notas</Text>
           </TouchableOpacity>
         </View>
       )}
 
       {expanded === 'materias' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('AgregarDocente')}>
-            <Text style={styles.dropdownText}>➕ Agregar Docente</Text>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('RegistrarMaterias')}>
+            <Text style={styles.dropdownText}>➕ Registrar Materias</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ListaDocentes')}>
-            <Text style={styles.dropdownText}>📋 Lista de Docentes</Text>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('PlanArea')}>
+            <Text style={styles.dropdownText}>📋 Plan de Area</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MateriasRegistradas')}>
+            <Text style={styles.dropdownText}>📋 Materias registradas</Text>
           </TouchableOpacity>
         </View>
       )}
 
       {expanded === 'notas' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('HabilitarNotas')}>
-            <Text style={styles.dropdownText}>✅ Habilitar Notas</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('DeshabilitarNotas')}>
-            <Text style={styles.dropdownText}>🚫 Deshabilitar Notas</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GestionNotas')}>
-            <Text style={styles.dropdownText}>📑 Gestion de notas por usuario</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {expanded === 'documentos' && (
-        <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GestionarLibros')}>
-            <Text style={styles.dropdownText}>📚 Gestionar Libros</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ArchivosDigitales')}>
-            <Text style={styles.dropdownText}>📑 Archivos Digitales</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('DocumentosOficiales')}>
-            <Text style={styles.dropdownText}>📂 Documentos Oficiales</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {expanded === 'reportes' && (
-        <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GenerarReportes')}>
-            <Text style={styles.dropdownText}>📊 Generar Reportes</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ReportesAsistencias')}>
-            <Text style={styles.dropdownText}>📅 Reporte de Asistencia</Text>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('PublicarNotas')}>
+            <Text style={styles.dropdownText}>✅ Publicar notas a los estudiantes</Text>
           </TouchableOpacity>
         </View>
       )}
 
       {expanded === 'comunicacion' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('CircularesAvisos')}>
-            <Text style={styles.dropdownText}>📢 Circulares y Avisos</Text>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GrupoDirectivas')}>
+            <Text style={styles.dropdownText}>📢 Grupos con Directivas</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MensajesEstudiantes')}>
-            <Text style={styles.dropdownText}>💬 Mensajes a Estudiantes</Text>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GrupoEstudiantes')}>
+            <Text style={styles.dropdownText}>💬 Grupos con estudiantes</Text>
           </TouchableOpacity>
         </View>
       )}
