@@ -1,15 +1,29 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
-
-# dependencies
+# ----------------------------------------
+# CORE: Dependencias y Logs
+# ----------------------------------------
+# Dependencias de Node (CRUCIAL: Nunca debe subirse)
 node_modules/
+jspm_packages/
 
-# Expo
+# Logs y Archivos de Debug
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# ----------------------------------------
+# EXPO / REACT NATIVE / CACHÉS DE BUILD
+# ----------------------------------------
+# Expo cache y builds
 .expo/
 dist/
 web-build/
 expo-env.d.ts
 
-# Native
+# Archivos de Native (Android/iOS)
 .kotlin/
 *.orig.*
 *.jks
@@ -21,17 +35,42 @@ expo-env.d.ts
 # Metro
 .metro-health-check*
 
-# debug
-npm-debug.*
-yarn-debug.*
-yarn-error.*
+# ----------------------------------------
+# CACHES Y OTROS ARCHIVOS TEMPORALES
+# ----------------------------------------
+# Caches de herramientas
+.cache
+.parcel-cache
+.npm
+.eslintcache
+.stylelintcache
+
+# TypeScript
+*.tsbuildinfo
 
 # macOS
 .DS_Store
 *.pem
 
-# local env files
+# Variables de Entorno (Mantener secretos fuera del repo)
+.env
+.env.*
+!.env.example
 .env*.local
 
-# typescript
-*.tsbuildinfo
+# Archivos de depuración y cobertura
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+coverage
+.nyc_output
+
+# Sveltekit
+.svelte-kit/
+
+# Vite logs files
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Output of 'npm pack'
+*.tgz
