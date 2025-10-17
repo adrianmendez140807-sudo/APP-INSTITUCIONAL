@@ -38,21 +38,9 @@ export default function CoordinadorHome({ navigation }) {
       </View>
 
       <View style={styles.grid}>
-        {/* Notas */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('notas')}>
-          <Text style={styles.cardText}>Gestión de Notas</Text>
-        </TouchableOpacity>
-
         {/* Documentos */}
         <TouchableOpacity style={styles.card} onPress={() => toggleExpand('documentos')}>
           <Text style={styles.cardText}>Documentos</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.grid}>
-        {/* Reportes */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('reportes')}>
-          <Text style={styles.cardText}>Reportes</Text>
         </TouchableOpacity>
 
         {/* Comunicación */}
@@ -71,9 +59,6 @@ export default function CoordinadorHome({ navigation }) {
       {/* Sub-opciones dinámicas */}
       {expanded === 'estudiantes' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('Estudiante')}>
-            <Text style={styles.dropdownText}>➕ Agregar Estudiante</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ListaEstudiantes')}>
             <Text style={styles.dropdownText}>📋 Lista de Estudiantes</Text>
           </TouchableOpacity>
@@ -85,50 +70,19 @@ export default function CoordinadorHome({ navigation }) {
 
       {expanded === 'docentes' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('AgregarDocente')}>
-            <Text style={styles.dropdownText}>➕ Agregar Docente</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ListaDocentes')}>
             <Text style={styles.dropdownText}>📋 Lista de Docentes</Text>
           </TouchableOpacity>
         </View>
       )}
 
-      {expanded === 'notas' && (
-        <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('HabilitarNotas')}>
-            <Text style={styles.dropdownText}>✅ Habilitar Notas</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('DeshabilitarNotas')}>
-            <Text style={styles.dropdownText}>🚫 Deshabilitar Notas</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GestionNotas')}>
-            <Text style={styles.dropdownText}>📑 Gestion de notas por usuario</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
       {expanded === 'documentos' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GestionarLibros')}>
-            <Text style={styles.dropdownText}>📚 Gestionar Libros</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ArchivosDigitales')}>
             <Text style={styles.dropdownText}>📑 Archivos Digitales</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('DocumentosOficiales')}>
             <Text style={styles.dropdownText}>📂 Documentos Oficiales</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {expanded === 'reportes' && (
-        <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GenerarReportes')}>
-            <Text style={styles.dropdownText}>📊 Generar Reportes</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ReportesAsistencias')}>
-            <Text style={styles.dropdownText}>📅 Reporte de Asistencia</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -139,7 +93,7 @@ export default function CoordinadorHome({ navigation }) {
             <Text style={styles.dropdownText}>📢 Circulares y Avisos</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MensajesEstudiantes')}>
-            <Text style={styles.dropdownText}>💬 Mensajes a Estudiantes</Text>
+            <Text style={styles.dropdownText}>💬 Mensajes</Text>
           </TouchableOpacity>
         </View>
       )}
