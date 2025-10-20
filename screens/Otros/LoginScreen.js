@@ -5,7 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
-    StyleSheet,
+  StyleSheet,
   Animated,
   Dimensions,
   KeyboardAvoidingView,
@@ -13,7 +13,7 @@ import {
   StatusBar
 } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
-import dbService from "../../database";
+import dbService from "../../database/index";
 
 const { width, height } = Dimensions.get('window');
 

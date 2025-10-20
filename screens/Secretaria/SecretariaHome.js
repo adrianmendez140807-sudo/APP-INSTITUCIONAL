@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation, Platform, UIManager, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
-import { getUsers, addUser, deleteUser } from '../../database'; // integración BD
+import { getUsers } from '../../database/index';
+
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -12,6 +13,15 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 export default function SecretariaHome({ navigation }) {
   const [expanded, setExpanded] = useState(null);
   const [users, setUsers] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const user = await AsyncStorage.getItem('currentUser');
+      setCurrentUser(JSON.parse(user));
+    };
+    getCurrentUser();
+  }, []);
 
   // cargar usuarios
   const loadUsers = async () => {
@@ -70,6 +80,9 @@ export default function SecretariaHome({ navigation }) {
         {/* Comunicación */}
         <TouchableOpacity style={styles.card} onPress={() => toggleExpand('comunicacion')}>
           <Text style={styles.cardText}>Comunicación</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('mensajeria')}>
+          <Text style={styles.cardText}>💬 Mensajes</Text>
         </TouchableOpacity>
       </View>
 
@@ -159,6 +172,20 @@ export default function SecretariaHome({ navigation }) {
         </View>
       )}
 
+      {expanded === 'mensajeria' && (
+        <View style={styles.dropdown}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MensajeriaHome')}>
+            <Text style={styles.dropdownText}>📬 Bandeja de Entrada</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('NewMessage', { currentUser })}>
+            <Text style={styles.dropdownText}>✏️ Nuevo Mensaje</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('CreateGroup')}>
+            <Text style={styles.dropdownText}>👥 Crear Grupo</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
       {expanded === 'ajustes' && (
         <View style={styles.dropdown}>
           <TouchableOpacity style={[styles.dropdownItem]} onPress={logout}>
@@ -190,11 +217,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginBottom: 10,
   },
-  dropdownItem: {
-    padding: 12,
-    borderBottomColor: 'rgba(255,255,255,0.2)',
-    borderBottomWidth: 1,
-  },
+  dropdownItem: { padding: 12, borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1 },
   dropdownText: { color: '#fff', fontSize: 15, fontWeight: '600' },
   dropdownExit: { color: '#ff0000ff', fontSize: 17, fontWeight: '800' },
 });

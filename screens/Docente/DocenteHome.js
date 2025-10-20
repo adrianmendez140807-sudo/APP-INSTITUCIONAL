@@ -1,5 +1,5 @@
 // screens/Secretaria/SecretariaHome.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation, Platform, UIManager } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -10,6 +10,15 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 
 export default function DocenteHome({ navigation }) {
   const [expanded, setExpanded] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const user = await AsyncStorage.getItem('currentUser');
+      setCurrentUser(JSON.parse(user));
+    };
+    getCurrentUser();
+  }, []);
 
   const toggleExpand = (section) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -47,7 +56,6 @@ export default function DocenteHome({ navigation }) {
         <TouchableOpacity style={styles.card} onPress={() => toggleExpand('notas')}>
           <Text style={styles.cardText}>Notas</Text>
         </TouchableOpacity>
-
       </View>
 
       {/* Ajustes */}
@@ -98,6 +106,15 @@ export default function DocenteHome({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GrupoEstudiantes')}>
             <Text style={styles.dropdownText}>💬 Grupos con estudiantes</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MensajeriaHome')}>
+            <Text style={styles.dropdownText}>📬 Bandeja de Entrada</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('NewMessage', { currentUser })}>
+            <Text style={styles.dropdownText}>✏️ Nuevo Mensaje</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('CreateGroup')}>
+            <Text style={styles.dropdownText}>👥 Crear Grupo</Text>
           </TouchableOpacity>
         </View>
       )}

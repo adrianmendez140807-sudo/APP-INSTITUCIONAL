@@ -44,10 +44,15 @@ import GrupoEstudiantes from '../screens/Docente/Comunicacion/GrupoEstudiantes';
 import GrupoDirectivas from '../screens/Docente/Comunicacion/GrupoDirectivas';
 import AnotacionesYNotas from '../screens/Docente/Estudiantes/AnotacionesYNotas';
 import MateriasRegistradas from '../screens/Docente/Materias/MateriasRegistradas';
-import PlanDeArea from '../screens/Docente/Materias/PlanArea';
 import RegistrarMaterias from '../screens/Docente/Materias/RegistrarMaterias';
 import PublicarNotas from '../screens/Docente/Notas/PublicarNotas';
 import PlanArea from '../screens/Docente/Materias/PlanArea';
+
+// Pantallas de Mensajería
+import MensajeriaHome from '../screens/Mensajeria/MensajeriaHome';
+import ChatScreen from '../screens/Mensajeria/ChatScreen';
+import NewMessage from '../screens/Mensajeria/NewMessage';
+import { CreateGroup } from '../screens/Mensajeria/CreateGroup';
 
 const Stack = createNativeStackNavigator();
 
@@ -109,6 +114,12 @@ export default function AppNavigator() {
       <Stack.Screen name="BaseDatosDocentes" component={BaseDatosDocentes1} options={{ title: 'BaseDatosDocentes' }} />
       <Stack.Screen name="SecretariaHome" component={SecretariaHome} options={{ title: 'Secretaría' }} />
       <Stack.Screen name="DetallesNotasEstudiante" component={DetallesNotasEstudiante} options={{ title: 'Detalles de Notas' }} />
+
+      {/* RUTAS DE MENSAJERÍA */}
+      <Stack.Screen name="MensajeriaHome" component={MensajeriaHome} options={{ title: 'Mensajes' }} />
+      <Stack.Screen name="ChatScreen" component={ChatScreen} options={{ title: 'Conversación' }} />
+      <Stack.Screen name="NewMessage" component={NewMessage} options={{ title: 'Nuevo Mensaje' }} />
+      <Stack.Screen name="CreateGroup" component={CreateGroup} options={{ title: 'Crear Grupo' }} />
     </Stack.Navigator>
   );
 }

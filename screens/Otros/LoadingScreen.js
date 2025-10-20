@@ -21,9 +21,9 @@ export default function LoadingScreen() {
 
   return (
     <View style={styles.container}>
-      <Animated.View style={{ transform: [{ rotate: spin }] }}>
+      <Animated.View style={{ transform: [{ rotate: '0deg' }] }}>
         <Image
-          source={require('../../assets/icon.png')}
+          source={require('../../assets/icon.jpg')}
           style={styles.logo}
         />
       </Animated.View>

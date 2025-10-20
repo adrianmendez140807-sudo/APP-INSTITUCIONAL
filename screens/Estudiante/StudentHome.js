@@ -1,5 +1,5 @@
 // screens/Secretaria/SecretariaHome.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation, Platform, UIManager } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -10,6 +10,15 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 
 export default function StudentHome({ navigation }) {
   const [expanded, setExpanded] = useState(null);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const user = await AsyncStorage.getItem('currentUser');
+      setCurrentUser(JSON.parse(user));
+    };
+    getCurrentUser();
+  }, []);
 
   const toggleExpand = (section) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -57,7 +66,7 @@ export default function StudentHome({ navigation }) {
 
         {/* Comunicación */}
         <TouchableOpacity style={styles.card} onPress={() => toggleExpand('Notas')}>
-          <Text style={styles.cardText}>Block de notas</Text>
+          <Text style={styles.cardText}>Comunicacion</Text>
         </TouchableOpacity>
       </View>
 
@@ -80,10 +89,10 @@ export default function StudentHome({ navigation }) {
       {expanded === 'Grupos' && (
         <View style={styles.dropdown}>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('AgregarDocente')}>
-            <Text style={styles.dropdownText}>Docente + Materia</Text>
+            <Text style={styles.dropdownText}>💬Docente + Materia</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ListaDocentes')}>
-            <Text style={styles.dropdownText}>Solo estudiantes</Text>
+            <Text style={styles.dropdownText}>💬Solo estudiantes</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -94,7 +103,7 @@ export default function StudentHome({ navigation }) {
             <Text style={styles.dropdownText}>Materias por docentes</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('DeshabilitarNotas')}>
-            <Text style={styles.dropdownText}>Total de Materias</Text>
+            <Text style={styles.dropdownText}>Total de Materias + NF</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GestionNotas')}>
             <Text style={styles.dropdownText}>Notas</Text>
@@ -133,7 +142,13 @@ export default function StudentHome({ navigation }) {
             <Text style={styles.dropdownText}>📢 Notas importantes de clase</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MensajesEstudiantes')}>
-            <Text style={styles.dropdownText}>💬 Talleres y tareas</Text>
+            <Text style={styles.dropdownText}>📢 Talleres y tareas</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MensajeriaHome')}>
+            <Text style={styles.dropdownText}>📬 Bandeja de Entrada</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('NewMessage', { currentUser })}>
+            <Text style={styles.dropdownText}>✏️ Nuevo Mensaje</Text>
           </TouchableOpacity>
         </View>
       )}
