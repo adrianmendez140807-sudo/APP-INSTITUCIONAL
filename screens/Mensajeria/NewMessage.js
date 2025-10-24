@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert, TextInput, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import dbService from '../../database';
+import dbService from '../../database/index';
 
 export default function NewMessage({ route, navigation }) {
   const { currentUser } = route.params;
@@ -12,8 +12,13 @@ export default function NewMessage({ route, navigation }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!currentUser) {
+      Alert.alert("Error", "Usuario no identificado. Volviendo...");
+      navigation.goBack();
+      return;
+    }
     loadUsers();
-  }, []);
+  }, [currentUser]);
 
   const loadUsers = async () => {
     try {
@@ -42,10 +47,7 @@ export default function NewMessage({ route, navigation }) {
       const conversationId = [currentUser.id, selectedUser.id].sort().join('_');
       
       // Verificar si la conversación ya existe
-      const exists = await dbService.db.getFirstAsync(
-        "SELECT id FROM conversaciones WHERE id = ?",
-        [conversationId]
-      );
+      const exists = await dbService.getConversationById(conversationId);
 
       if (exists) {
         navigation.navigate('ChatScreen', { 

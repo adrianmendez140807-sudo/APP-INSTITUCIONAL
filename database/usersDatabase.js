@@ -239,4 +239,3 @@ const usersDbService = {
 };
 
 module.exports = usersDbService;
-export default usersDbService;

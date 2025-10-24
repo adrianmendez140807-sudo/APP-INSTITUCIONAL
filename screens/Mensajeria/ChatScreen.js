@@ -13,7 +13,7 @@ import {
   Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import dbService from '../../database/index';
+const dbService = require('../../database/index');
 import MessageBubble from '../../components/MessageBubble';
 
 const styles = StyleSheet.create({
@@ -98,6 +98,59 @@ const styles = StyleSheet.create({
   },
   sendButtonDisabled: {
     backgroundColor: '#ccc',
+  },
+  messageBubbleContainer: {
+    flexDirection: 'row',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-end',
+  },
+  ownMessage: {
+    justifyContent: 'flex-end',
+  },
+  messageBubble: {
+    backgroundColor: '#e9ecef',
+    borderRadius: 18,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    maxWidth: '80%',
+  },
+  ownBubble: {
+    backgroundColor: '#007bff',
+  },
+  messageText: {
+    color: '#212529',
+    fontSize: 15,
+    lineHeight: 20,
+  },
+  ownText: {
+    color: '#fff',
+  },
+  messageMetadata: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+    gap: 4,
+    justifyContent: 'flex-end',
+  },
+  messageTime: {
+    fontSize: 12,
+    color: '#6c757d',
+  },
+  ownTime: {
+    color: 'rgba(255, 255, 255, 0.8)',
+  },
+  readIcon: {
+    marginLeft: 2,
+  },
+  deleteButton: {
+    marginLeft: 8,
+    padding: 8,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#ff6b6b',
   },
 });
 

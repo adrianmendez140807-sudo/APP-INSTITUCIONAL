@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, FlatList, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  FlatList, 
+  TouchableOpacity, 
+  StyleSheet, 
+  Alert, 
+  ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import * as dbService from '../../database/messagingDatabase';
+import dbService from '../../database/index';
 
 // screens/Mensajeria/CreateGroup.js
-export function CreateGroup({ route, navigation }) {
+export default function CreateGroup({ route, navigation }) {
   const { currentUser } = route.params;
   const [groupName, setGroupName] = useState('');
   const [users, setUsers] = useState([]);
@@ -12,8 +20,13 @@ export function CreateGroup({ route, navigation }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!currentUser) {
+      Alert.alert("Error", "Usuario no identificado. Volviendo...");
+      navigation.goBack();
+      return;
+    }
     loadUsers();
-  }, []);
+  }, [currentUser]);
 
   const loadUsers = async () => {
     try {

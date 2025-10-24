@@ -307,6 +307,19 @@ const deleteConversation = async (conversationId) => {
   }
 };
 
+const getConversationById = async (conversationId) => {
+  try {
+    const conversation = await msgDb.getFirstAsync(
+      "SELECT * FROM conversaciones WHERE id = ?",
+      [conversationId]
+    );
+    return conversation || null;
+  } catch (error) {
+    console.error("❌ Error al obtener conversación por ID:", error);
+    return null;
+  }
+};
+
 // --- EXPORTACIÓN DEL SERVICIO DE MENSAJERÍA ---
 const messagingDbService = {
   initMessagingDatabase,
@@ -322,7 +335,7 @@ const messagingDbService = {
   getConversationDetails,
   getConversationMembers,
   deleteConversation,
+  getConversationById,
 };
 
 module.exports = messagingDbService;
-export default messagingDbService;

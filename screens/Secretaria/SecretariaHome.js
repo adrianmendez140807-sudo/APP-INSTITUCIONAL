@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation, Platform, UIManager, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
-import { getUsers } from '../../database/index';
+import dbService from '../../database/index';
 
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -25,7 +25,7 @@ export default function SecretariaHome({ navigation }) {
 
   // cargar usuarios
   const loadUsers = async () => {
-    const all = await getUsers();
+    const all = await dbService.getUsers();
     setUsers(all);
   };
 
@@ -177,10 +177,10 @@ export default function SecretariaHome({ navigation }) {
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MensajeriaHome')}>
             <Text style={styles.dropdownText}>📬 Bandeja de Entrada</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('NewMessage', { currentUser })}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('NewMessage', { currentUser })} disabled={!currentUser}>
             <Text style={styles.dropdownText}>✏️ Nuevo Mensaje</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('CreateGroup')}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('CreateGroup', { currentUser })} disabled={!currentUser}>
             <Text style={styles.dropdownText}>👥 Crear Grupo</Text>
           </TouchableOpacity>
         </View>
@@ -198,9 +198,23 @@ export default function SecretariaHome({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  title: { fontSize: 28, fontWeight: 'bold', color: '#fff', textAlign: 'center', marginBottom: 20, marginTop: 40 },
-  grid: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 15 },
+  container: { 
+    flex: 1, 
+    padding: 20 
+  },
+  title: { 
+    fontSize: 28, 
+    fontWeight: 'bold', 
+    color: '#fff', 
+    textAlign: 'center', 
+    marginBottom: 20, 
+    marginTop: 40 
+  },
+  grid: { 
+    flexDirection: 'row', 
+    justifyContent: 'space-around', 
+    marginBottom: 15 
+  },
   card: {
     flex: 1,
     backgroundColor: 'rgba(255,255,255,0.25)',
@@ -209,7 +223,12 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: 'center',
   },
-  cardText: { color: '#fff', fontWeight: 'bold', fontSize: 16, textAlign: 'center' },
+  cardText: { 
+    color: '#fff', 
+    fontWeight: 'bold', 
+    fontSize: 16, 
+    textAlign: 'center' 
+  },
   dropdown: {
     backgroundColor: 'rgba(255,255,255,0.15)',
     borderRadius: 12,
@@ -217,7 +236,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginBottom: 10,
   },
-  dropdownItem: { padding: 12, borderBottomColor: 'rgba(255,255,255,0.2)', borderBottomWidth: 1 },
-  dropdownText: { color: '#fff', fontSize: 15, fontWeight: '600' },
-  dropdownExit: { color: '#ff0000ff', fontSize: 17, fontWeight: '800' },
+  dropdownItem: { 
+    padding: 12, 
+    borderBottomColor: 'rgba(255,255,255,0.2)', 
+    borderBottomWidth: 1 
+  },
+  dropdownText: { 
+    color: '#fff', 
+    fontSize: 15, 
+    fontWeight: '600' 
+  },
+  dropdownExit: { 
+    color: '#ff0000ff', 
+    fontSize: 17, 
+    fontWeight: '800'
+  },
 });

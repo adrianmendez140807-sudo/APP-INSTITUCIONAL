@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigator from './navigation/AppNavigator';
-import { initializeDatabases } from './database/index';
+const dbService = require('./database/index');
 import LoadingScreen from './screens/Otros/LoadingScreen';
 
 export default function App() {
@@ -14,7 +14,7 @@ export default function App() {
       try {
         console.log('📱 Iniciando aplicación...');
         // Inicializar ambas bases de datos
-        await initializeDatabases();
+        await dbService.initializeDatabases();
         setLoading(false);
         console.log("✅ Aplicación lista");
       } catch (error) {

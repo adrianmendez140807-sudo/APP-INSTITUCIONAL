@@ -13,6 +13,7 @@ import {
   StatusBar
 } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import dbService from "../../database/index";
 
 const { width, height } = Dimensions.get('window');
@@ -119,6 +120,7 @@ export default function LoginScreen({ navigation }) {
   const handleLogin = async () => {
     const user = await dbService.getUserByLogin(email, password);
     if (user) {
+      await AsyncStorage.setItem('currentUser', JSON.stringify(user));
       switch (user.role) {
         case 'docente':
           navigation.navigate('DocenteHome');

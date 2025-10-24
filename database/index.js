@@ -1,23 +1,22 @@
-// database/index.js
-import usersDbService from './usersDatabase';
-import messagingDbService from './messagingDatabase';
-
-// --- INICIALIZAR AMBAS BASES DE DATOS ---
-export const initializeDatabases = async () => {
-  try {
-    console.log('🔄 Inicializando bases de datos...');
-    await usersDbService.initUsersDatabase();
-    await messagingDbService.initMessagingDatabase();
-    console.log('✅ Ambas bases de datos inicializadas correctamente');
-    return true;
-  } catch (error) {
-    console.error('❌ Error inicializando bases de datos:', error);
-    throw error;
-  }
-};
+const usersDbService = require('./usersDatabase');
+const messagingDbService = require('./messagingDatabase');
 
 // --- COMBINAR Y EXPORTAR TODOS LOS SERVICIOS ---
 const dbService = {
+  // Inicialización
+  initializeDatabases: async () => {
+    try {
+      console.log('🔄 Inicializando bases de datos...');
+      await usersDbService.initUsersDatabase();
+      await messagingDbService.initMessagingDatabase();
+      console.log('✅ Ambas bases de datos inicializadas correctamente');
+      return true;
+    } catch (error) {
+      console.error('❌ Error inicializando bases de datos:', error);
+      throw error;
+    }
+  },
+
   // Servicios de Usuarios
   initUsersDatabase: usersDbService.initUsersDatabase,
   addUser: usersDbService.addUser,
@@ -43,6 +42,7 @@ const dbService = {
   getConversationDetails: messagingDbService.getConversationDetails,
   getConversationMembers: messagingDbService.getConversationMembers,
   deleteConversation: messagingDbService.deleteConversation,
+  getConversationById: messagingDbService.getConversationById,
 };
 
-export default dbService;
+module.exports = dbService;

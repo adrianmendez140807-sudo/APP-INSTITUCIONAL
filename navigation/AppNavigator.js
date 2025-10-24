@@ -52,7 +52,7 @@ import PlanArea from '../screens/Docente/Materias/PlanArea';
 import MensajeriaHome from '../screens/Mensajeria/MensajeriaHome';
 import ChatScreen from '../screens/Mensajeria/ChatScreen';
 import NewMessage from '../screens/Mensajeria/NewMessage';
-import { CreateGroup } from '../screens/Mensajeria/CreateGroup';
+import CreateGroup from '../screens/Mensajeria/CreateGroup';
 
 const Stack = createNativeStackNavigator();
 
