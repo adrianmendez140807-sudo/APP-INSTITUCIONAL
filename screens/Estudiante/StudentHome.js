@@ -80,7 +80,7 @@ export default function StudentHome({ navigation }) {
       {/* Sub-opciones dinámicas */}
       {expanded === 'docentes de estudiantes' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('Estudiante')}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('DocentesList')}>
             <Text style={styles.dropdownText}>Listado completo de docentes</Text>
           </TouchableOpacity>
         </View>
@@ -113,14 +113,8 @@ export default function StudentHome({ navigation }) {
 
       {expanded === 'Horario' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GestionarLibros')}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('HorarioGeneral')}>
             <Text style={styles.dropdownText}>📅 Horario General</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ArchivosDigitales')}>
-            <Text style={styles.dropdownText}>📅 Cambios de horario</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('DocumentosOficiales')}>
-            <Text style={styles.dropdownText}>Razones</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -138,10 +132,10 @@ export default function StudentHome({ navigation }) {
 
       {expanded === 'Notas' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('CircularesAvisos')}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('NotasImportantes')}>
             <Text style={styles.dropdownText}>📢 Notas importantes de clase</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MensajesEstudiantes')}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('Apuntes')}>
             <Text style={styles.dropdownText}>📢 Talleres y tareas</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MensajeriaHome')}>

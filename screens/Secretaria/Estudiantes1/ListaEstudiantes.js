@@ -30,7 +30,7 @@ export default function ListaEstudiantes({ navigation }) {
   }, [navigation, fetchStudents]);
 
   const handleSelectStudent = (student) => {
-    navigation.navigate('BaseDatosEstudiantes', { student });
+    navigation.navigate('BaseDatosEstudiantes', { studentId: student.id });
   };
 
   const handleDeleteStudent = (studentId) => {

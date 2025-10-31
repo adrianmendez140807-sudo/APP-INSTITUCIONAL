@@ -20,7 +20,6 @@ import CircularesAvisos from '../screens/Secretaria/Comunicacion/CircularesAviso
 import MensajesEstudiantes from '../screens/Secretaria/Comunicacion/MensajesEstudiantes';
 import ArchivosDigitales from '../screens/Secretaria/Documentos/ArchivosDigitales';
 import GestionarLibros from '../screens/Secretaria/Documentos/GestionarLibros';
-import GenerarReportes from '../screens/Secretaria/Reportes/GenerarReportes';
 import ReportesAsistencias from '../screens/Secretaria/Reportes/ReportesAsistencias';
 import DocumentosOficiales from '../screens/Secretaria/Documentos/DocumentosOficiales';
 import StudentHome from '../screens/Estudiante/StudentHome';
@@ -32,7 +31,6 @@ import Apuntes from '../screens/Estudiante/BlockNotas/Apuntes';
 import Informaciones from '../screens/Estudiante/ActividadesInformacion/Informaciones';
 import Avisos from '../screens/Estudiante/ActividadesInformacion/Avisos';
 import HorarioGeneral1 from '../screens/Estudiante/Horario/HorarioGeneral';
-import CambioHorario1 from '../screens/Estudiante/Horario/CambioHorario';
 import Razones1 from '../screens/Estudiante/Horario/Razones';
 import MateriasDocentes1 from '../screens/Estudiante/Materias/MateriasDocentes';
 import Notas1 from '../screens/Estudiante/Materias/Notas';
@@ -49,10 +47,13 @@ import PublicarNotas from '../screens/Docente/Notas/PublicarNotas';
 import PlanArea from '../screens/Docente/Materias/PlanArea';
 
 // Pantallas de Mensajería
+import GestionHorarios from '../screens/Coordinacion/GestionHorarios';
+import GestionColores from '../screens/Coordinacion/GestionColores';
 import MensajeriaHome from '../screens/Mensajeria/MensajeriaHome';
 import ChatScreen from '../screens/Mensajeria/ChatScreen';
 import NewMessage from '../screens/Mensajeria/NewMessage';
 import CreateGroup from '../screens/Mensajeria/CreateGroup';
+import DocentesList from '../screens/Estudiante/Docentes/DocentList';
 
 const Stack = createNativeStackNavigator();
 
@@ -65,6 +66,8 @@ export default function AppNavigator() {
 
       {/*Rutas usadas dentro de Coordinación */}
       <Stack.Screen name="CoordinadorHome" component={CoordinadorHome} options={{ title: 'Coordinación' }} />
+      <Stack.Screen name="GestionHorarios" component={GestionHorarios} options={{ title: 'Gestión de Horarios' }} />
+      <Stack.Screen name="GestionColores" component={GestionColores} options={{ title: 'Gestión de Colores' }} />
 
       {/*Rutas usadas dentro de Rectoría */}
       <Stack.Screen name="RectorHome" component={RectorHome} options={{ title: 'Rectoría' }} />
@@ -83,7 +86,6 @@ export default function AppNavigator() {
       {/*Rutas usadas dentro de Estudiante */}
       <Stack.Screen name="StudentHome" component={StudentHome} options={{ title: 'Estudiante' }} />
       <Stack.Screen name="HorarioGeneral" component={HorarioGeneral1} options={{ title: 'Horario General' }} />
-      <Stack.Screen name="CambioHorario" component={CambioHorario1} options={{ title: 'Cambio de Horario' }} />
       <Stack.Screen name="Razones" component={Razones1} options={{ title: 'Razones' }} />
       <Stack.Screen name="MateriasDocentes" component={MateriasDocentes1} options={{ title: 'Materias por Docente' }} />
       <Stack.Screen name="Notas" component={Notas1} options={{ title: 'Notas' }} />
@@ -91,7 +93,7 @@ export default function AppNavigator() {
       <Stack.Screen name="NotasImportantes" component={NotasImportantes} options={{ title: 'Notas Importantes' }} />
       <Stack.Screen name="StudentsGroup" component={StudentsGroup1} options={{ title: 'Grupo de Estudiantes' }} />
       <Stack.Screen name="DocenteMateria" component={DocenteMateria} options={{ title: 'Docente por Materia' }} />
-      <Stack.Screen name="DocentesList" component={DocentList} options={{ title: 'Lista de Docentes' }} />
+      <Stack.Screen name="DocentesList" component={DocentesList} options={{ title: 'Lista de Docentes' }} />
       <Stack.Screen name="Apuntes" component={Apuntes} options={{ title: 'Apuntes' }} />
       <Stack.Screen name="Informes" component={Informaciones} options={{ title: 'Informes' }} />
       <Stack.Screen name="Avisos" component={Avisos} options={{ title: 'Avisos' }} />
@@ -109,7 +111,6 @@ export default function AppNavigator() {
       <Stack.Screen name="ArchivosDigitales" component={ArchivosDigitales} options={{ title: 'AD'}}/>
       <Stack.Screen name="DocumentosOficiales" component={DocumentosOficiales} options={{ title: 'DO'}}/>
       <Stack.Screen name="GestionarLibros" component={GestionarLibros} options={{ title: 'GL'}}/>
-      <Stack.Screen name="GenerarReportes" component={GenerarReportes} options={{ title: 'GR'}}/>
       <Stack.Screen name="ReportesAsistencias" component={ReportesAsistencias} options={{ title: 'RA'}}/>
       <Stack.Screen name="BaseDatosDocentes" component={BaseDatosDocentes1} options={{ title: 'BaseDatosDocentes' }} />
       <Stack.Screen name="SecretariaHome" component={SecretariaHome} options={{ title: 'Secretaría' }} />

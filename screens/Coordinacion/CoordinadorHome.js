@@ -23,7 +23,7 @@ export default function CoordinadorHome({ navigation }) {
 
   return (
     <LinearGradient colors={['#3056ffff', '#59ff91ff']} style={styles.container}>
-      <Text style={styles.title}>Panel de Secretaría</Text>
+      <Text style={styles.title}>Panel de Coordinación</Text>
 
       <View style={styles.grid}>
         {/* Estudiantes */}
@@ -39,8 +39,8 @@ export default function CoordinadorHome({ navigation }) {
 
       <View style={styles.grid}>
         {/* Documentos */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('documentos')}>
-          <Text style={styles.cardText}>Documentos</Text>
+        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('horarios')}>
+          <Text style={styles.cardText}>Gestión de Horarios</Text>
         </TouchableOpacity>
 
         {/* Comunicación */}
@@ -62,9 +62,6 @@ export default function CoordinadorHome({ navigation }) {
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ListaEstudiantes')}>
             <Text style={styles.dropdownText}>📋 Lista de Estudiantes</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('BaseDatosEstudiantes')}>
-            <Text style={styles.dropdownText}>🗃️ Base de Datos de Estudiantes</Text>
-          </TouchableOpacity>
         </View>
       )}
 
@@ -72,6 +69,17 @@ export default function CoordinadorHome({ navigation }) {
         <View style={styles.dropdown}>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ListaDocentes')}>
             <Text style={styles.dropdownText}>📋 Lista de Docentes</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {expanded === 'horarios' && (
+        <View style={styles.dropdown}>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GestionHorarios')}>
+            <Text style={styles.dropdownText}>✏️ Editar Horarios por Grado</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GestionColores')}>
+            <Text style={styles.dropdownText}>🎨 Asignar Colores a Materias</Text>
           </TouchableOpacity>
         </View>
       )}

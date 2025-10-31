@@ -65,9 +65,9 @@ export default function SecretariaHome({ navigation }) {
           <Text style={styles.cardText}>Gestión de Notas</Text>
         </TouchableOpacity>
 
-        {/* Documentos */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('documentos')}>
-          <Text style={styles.cardText}>Documentos</Text>
+        {/* Comunicación */}
+        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('comunicacion')}>
+          <Text style={styles.cardText}>Comunicación</Text>
         </TouchableOpacity>
       </View>
 
@@ -77,10 +77,6 @@ export default function SecretariaHome({ navigation }) {
           <Text style={styles.cardText}>Reportes</Text>
         </TouchableOpacity>
 
-        {/* Comunicación */}
-        <TouchableOpacity style={styles.card} onPress={() => toggleExpand('comunicacion')}>
-          <Text style={styles.cardText}>Comunicación</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.card} onPress={() => toggleExpand('mensajeria')}>
           <Text style={styles.cardText}>💬 Mensajes</Text>
         </TouchableOpacity>
@@ -127,9 +123,6 @@ export default function SecretariaHome({ navigation }) {
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('HabilitarNotas')}>
             <Text style={styles.dropdownText}>✅ Habilitar Notas</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('DeshabilitarNotas')}>
-            <Text style={styles.dropdownText}>Detalles de las notas</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GestionNotas')}>
             <Text style={styles.dropdownText}>📑 Gestion de notas por usuario</Text>
           </TouchableOpacity>
@@ -152,9 +145,6 @@ export default function SecretariaHome({ navigation }) {
 
       {expanded === 'reportes' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('GenerarReportes')}>
-            <Text style={styles.dropdownText}>📊 Generar Reportes</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('ReportesAsistencias')}>
             <Text style={styles.dropdownText}>📅 Reporte de Asistencia</Text>
           </TouchableOpacity>
@@ -163,20 +153,14 @@ export default function SecretariaHome({ navigation }) {
 
       {expanded === 'comunicacion' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('CircularesAvisos')}>
-            <Text style={styles.dropdownText}>📢 Circulares y Avisos</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MensajesEstudiantes')}>
-            <Text style={styles.dropdownText}>💬 Mensajes a Estudiantes</Text>
+          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MensajeriaHome')}>
+            <Text style={styles.dropdownText}>📬 Bandeja de Entrada</Text>
           </TouchableOpacity>
         </View>
       )}
 
       {expanded === 'mensajeria' && (
         <View style={styles.dropdown}>
-          <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('MensajeriaHome')}>
-            <Text style={styles.dropdownText}>📬 Bandeja de Entrada</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.dropdownItem} onPress={() => navigation.navigate('NewMessage', { currentUser })} disabled={!currentUser}>
             <Text style={styles.dropdownText}>✏️ Nuevo Mensaje</Text>
           </TouchableOpacity>
